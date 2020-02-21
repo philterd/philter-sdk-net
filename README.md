@@ -16,7 +16,7 @@ To filter text:
 
 ```
 PhilterClient client = new PhilterClient("https://127.0.0.1:8080");
-FilterResponse filterResponse = client.filter(text);
+string filteredText = client.Filter(text);
 ```
 
 ## License
