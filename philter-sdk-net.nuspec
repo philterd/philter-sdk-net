@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>philter-sdk-net</id>
+    <version>1.0.0</version>
+    <title>Philter .NET SDK</title>
+    <authors>Mountain Fog, Inc.</authors>
+    <owners>Mountain Fog, Inc.</owners>
+    <projectUrl>https://github.com/mtnfog/philter-sdk-net</projectUrl>
+    <iconUrl>https://github.com/mtnfog/philter-sdk-net/raw/master/images/icon.png</iconUrl>
+    <icon>images\icon.png</icon>
+    <description>The Philter SDK for .NET enables .NET developers to easily work with Philter. Philter identifies and manipulates sensitive information like Protected Health Information (PHI) and personally identifiable information (PII) from natural language text.</description>
+    <releaseNotes>Initial release.</releaseNotes>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <license type="expression">Apache-2.0</license>
+    <copyright>Copyright 2020 Mountain Fog, Inc.</copyright>
+    <tags>philter pii phi filtering</tags>
+    <dependencies>
+      <group targetFramework="netstandard2.1">
+        <dependency id="Newtonsoft.Json" version="12.0.3" />
+        <dependency id="RestSharp" version="106.10.1" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="images\icon.png" target="images\" />
+  </files>
+</package>

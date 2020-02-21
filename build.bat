@@ -1,2 +1,4 @@
+dotnet clean
 dotnet restore
-dotnet build
+dotnet build -c Release
+nuget pack philter-sdk-net.csproj -Prop Configuration=Release
