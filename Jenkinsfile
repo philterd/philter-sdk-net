@@ -6,11 +6,27 @@ pipeline {
     options {
         buildDiscarder(logRotator(numToKeepStr: '3'))
     }
+    parameters {
+        booleanParam(defaultValue: false, description: 'Publish NuGet package', name: 'isPublish')
+    }
     stages {
-        stage ('Build') {         
-            steps {
-                sh "./build.sh"
-            }
+        stage ('Build') {
+          steps {
+              sh "./build.sh"
+          }
+        }
+        stage ('Publish') {
+          when {
+              expression {
+                  if (env.isPublish == "false") {
+                      return true
+                  }
+                  return false
+              }
+          }
+          steps {
+              sh "dotnet nuget push philter-sdk-net.1.0.0.nupkg -s https://api.nuget.org/v3/index.json"
+          }
         }
     }
 }
