@@ -1,66 +1,122 @@
-using System.Threading.Tasks;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using Philter.Model;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Linq;
+using RestSharp;
+using System;
+using System.Net;
 
 namespace Philter
 {
     public class PhilterClient
     {
-        private readonly HttpClient client = new HttpClient();
 
-        private string endpoint;
+        private readonly RestClient client;
 
-        public PhilterClient(string endpoint)
-        {
-          this.endpoint = endpoint;
-        }
-
-        public async Task<string> Filter(string text, string context)
+        public PhilterClient(string endpoint, bool ignoreSelfSignedCertificates)
         {
 
-            //var parameters = new Dictionary<string, string> { { "c", context } };
-            //var encodedContent = new FormUrlEncodedContent (parameters);
+            this.client = new RestClient(endpoint);
 
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("text/plain"));
-
-            var response = await client.PostAsync(endpoint + "/api/filter", new StringContent(text));
-            var content = await response.Content.ReadAsStringAsync();
-            
-            return content;
+            if (ignoreSelfSignedCertificates)
+            {
+                client.RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
+            }
 
         }
 
-        public async Task<FilterResponse> Explain(string text, string context)
+        public string Filter(string text, string context, string filterProfileName)
         {
 
-            //var parameters = new Dictionary<string, string> { { "c", context } };
-            //var encodedContent = new FormUrlEncodedContent(parameters);
+            var request = new RestRequest("api/filter", Method.POST);
+            request.AddParameter("c", context);
+            request.AddParameter("p", filterProfileName);
+            request.AddHeader("accept", "text/plain");
+            request.AddParameter("text/plain", text, ParameterType.RequestBody);
 
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("text/plain"));
+            IRestResponse response = client.Execute(request);
 
-            var response = await client.PostAsync(endpoint + "/api/explain", new StringContent(text));
-            var content = await response.Content.ReadAsStringAsync();
-
-            return JsonConvert.DeserializeObject<FilterResponse>(content);
+            if (response.IsSuccessful)
+            {
+                return response.Content;
+            }
+            else
+            {
+                throw new PhilterException("Unable to filter text. Check Philter's status.", response.ErrorException);
+            }
 
         }
 
-        public async Task<Status> GetStatus()
+        public FilterResponse Explain(string text, string context, string filterProfileName)
         {
 
-            var response = await client.GetAsync(endpoint + "/api/status");
-            var json = await response.Content.ReadAsStringAsync();
+            var request = new RestRequest("api/explain", Method.POST);
+            request.AddParameter("c", context);
+            request.AddParameter("p", filterProfileName);
+            request.AddHeader("accept", "application/json");
+            request.AddParameter("text/plain", text, ParameterType.RequestBody);
 
-            var status = JsonConvert.DeserializeObject<Status>(json);
+            IRestResponse response = client.Execute(request);
 
-            return status;
+            if (response.IsSuccessful)
+            {
+                return JsonConvert.DeserializeObject<FilterResponse>(response.Content);
+            }
+            else
+            {
+                throw new PhilterException("Unable to filter text. Check Philter's status.", response.ErrorException);
+            }
+
+        }
+
+        public List<ResponseSpan> GetReplacements(string documentId)
+        {
+
+            var request = new RestRequest("api/replacements", Method.GET);
+            request.AddParameter("d", documentId);
+            request.AddHeader("accept", "application/json");
+
+            IRestResponse response = client.Execute(request);
+
+            Console.WriteLine(response.StatusCode);
+
+            if (response.StatusCode == HttpStatusCode.ServiceUnavailable)
+            {
+                throw new ReplacementStoreDisabledException("Philter's replacement store is not enabled.");
+            }
+            else
+            {
+                if (response.IsSuccessful)
+                {
+                    ResponseSpan[] spans = JsonConvert.DeserializeObject<ResponseSpan[]>(response.Content);
+                    if (spans != null)
+                    {
+                        return spans.ToList();
+                    }
+                    else
+                    {
+                        return new List<ResponseSpan>();
+                    }
+                }
+                else
+                {
+                    throw new PhilterException("Unable to get replacements. Check Philter's status.", response.ErrorException);
+                }
+            }
+
+        }
+
+        public bool GetStatus()
+        {
+
+            var request = new RestRequest("api/status", Method.GET);
+
+            IRestResponse response = client.Execute(request);
+
+            return response.IsSuccessful;
 
         }
 
     }
+
 }
