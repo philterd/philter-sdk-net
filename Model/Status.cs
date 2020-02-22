@@ -14,24 +14,16 @@
  * the License.
  ******************************************************************************/
 
+using Newtonsoft.Json;
+
 namespace Philter.Model
 {
     public class Status
-    { 
-
-        private string _status;
-
-        public string status
-        {
-            get
-            {
-                return this._status;
-            }
-            set
-            {
-                this._status = value;
-            }
-        }
-
+    {
+        [JsonProperty("status")]
+        public string status { get; set; }
+        
+        [JsonProperty("version")]
+        public string version { get; set; }
     }
 }

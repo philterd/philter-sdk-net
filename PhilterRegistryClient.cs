@@ -24,16 +24,16 @@ namespace Philter
     public class PhilterRegistryClient
     {
 
-        private readonly RestClient client;
+        private readonly RestClient _client;
 
         public PhilterRegistryClient(string endpoint, bool ignoreSelfSignedCertificates)
         {
 
-            this.client = new RestClient(endpoint);
+            _client = new RestClient(endpoint);
 
             if (ignoreSelfSignedCertificates)
             {
-                client.RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
+                _client.RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
             }
 
         }
@@ -44,7 +44,7 @@ namespace Philter
             var request = new RestRequest("api/profiles", Method.GET);
             request.AddHeader("accept", "application/json");
 
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = _client.Execute(request);
 
             if (response.IsSuccessful)
             {
@@ -64,7 +64,7 @@ namespace Philter
             request.AddParameter("filterProfileName", filterProfileName, ParameterType.UrlSegment);
             request.AddHeader("accept", "application/json");
 
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = _client.Execute(request);
 
             if (response.IsSuccessful)
             {
@@ -84,7 +84,7 @@ namespace Philter
             request.AddHeader("content-type", "application/json");
             request.AddParameter("application/json", filterProfile, ParameterType.RequestBody);
 
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = _client.Execute(request);
 
             if (!response.IsSuccessful)
             {
@@ -99,7 +99,7 @@ namespace Philter
             var request = new RestRequest("api/profiles/{filterProfileName}", Method.DELETE);
             request.AddParameter("filterProfileName", filterProfileName, ParameterType.UrlSegment);
 
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = _client.Execute(request);
 
             if (!response.IsSuccessful)
             {

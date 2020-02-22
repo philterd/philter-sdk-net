@@ -14,63 +14,22 @@
  * the License.
  ******************************************************************************/
 
+using Newtonsoft.Json;
+
 namespace Philter.Model
 {
     public class FilterResponse
-    { 
+    {
+        [JsonProperty("filteredText")]
+        public string filteredText { get; set; }
 
-        private string _filteredText;
-        private string _context;
-        private string _documentId;
-        private Explanation _explanation;
+        [JsonProperty("context")]
+        public string context { get; set; }
 
-        public string filteredText
-        {
-            get
-            {
-                return this._filteredText;
-            }
-            set
-            {
-                this._filteredText = value;
-            }
-        }
+        [JsonProperty("documentId")]
+        public string documentId { get; set; }
 
-        public string context
-        {
-            get
-            {
-                return this._context;
-            }
-            set
-            {
-                this._context = value;
-            }
-        }
-
-        public string documentId
-        {
-            get
-            {
-                return this._documentId;
-            }
-            set
-            {
-                this._documentId = value;
-            }
-        }
-
-        public Explanation explanation
-        {
-            get
-            {
-                return this._explanation;
-            }
-            set
-            {
-                this._explanation = value;
-            }
-        }
-
+        [JsonProperty("explanation")]
+        public Explanation explanation { get; set; }
     }
 }

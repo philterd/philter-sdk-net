@@ -15,38 +15,16 @@
  ******************************************************************************/
 
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Philter.Model
 {
     public class Explanation
     {
+        [JsonProperty("appliedSpans")]
+        public List<Span> appliedSpans { get; set; }
 
-        private List<Span> _appliedSpans;
-        private List<Span> _identifiedSpans;
-
-        public List<Span> appliedSpans
-        {
-            get
-            {
-                return this._appliedSpans;
-            }
-            set
-            {
-                this._appliedSpans = value;
-            }
-        }
-
-        public List<Span> identifiedSpans
-        {
-            get
-            {
-                return this._identifiedSpans;
-            }
-            set
-            {
-                this._identifiedSpans = value;
-            }
-        }
-
+        [JsonProperty("identifiedSpans")]
+        public List<Span> identifiedSpans { get; set; }
     }
 }

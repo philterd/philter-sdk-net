@@ -14,102 +14,31 @@
  * the License.
  ******************************************************************************/
 
+using Newtonsoft.Json;
+
 namespace Philter.Model
 {
     public class Span
-    { 
+    {
+        [JsonProperty("characterStart")]
+        public int characterStart { get; set; }
 
-        private int _characterStart;
-        private int _characterEnd;
-        private string _context;
-        private string _documentId;
-        private double _confidence;
-        private string _replacement;
-        private FilterType _filterType;
+        [JsonProperty("characterEnd")]
+        public int characterEnd { get; set; }
 
-        public int characterStart
-        {
-            get
-            {
-                return this._characterStart;
-            }
-            set
-            {
-                this._characterStart = value;
-            }
-        }
+        [JsonProperty("context")]
+        public string context { get; set; }
 
-        public int characterEnd
-        {
-            get
-            {
-                return this._characterEnd;
-            }
-            set
-            {
-                this._characterEnd = value;
-            }
-        }
+        [JsonProperty("documentId")]
+        public string documentId { get; set; }
 
-        public string context
-        {
-            get
-            {
-                return this._context;
-            }
-            set
-            {
-                this._context = value;
-            }
-        }
+        [JsonProperty("confidence")]
+        public double confidence { get; set; }
 
-        public string documentId
-        {
-            get
-            {
-                return this._documentId;
-            }
-            set
-            {
-                this._documentId = value;
-            }
-        }
+        [JsonProperty("replacement")]
+        public string replacement { get; set; }
 
-        public double confidence
-        {
-            get
-            {
-                return this._confidence;
-            }
-            set
-            {
-                this._confidence = value;
-            }
-        }
-
-        public string replacement
-        {
-            get
-            {
-                return this._replacement;
-            }
-            set
-            {
-                this._replacement = value;
-            }
-        }
-
-        public FilterType filterType
-        {
-            get
-            {
-                return this._filterType;
-            }
-            set
-            {
-                this._filterType = value;
-            }
-        }
-
+        [JsonProperty("filterType")]
+        public FilterType filterType { get; set; }
     }
 }
