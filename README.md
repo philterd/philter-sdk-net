@@ -12,11 +12,18 @@ Clone and import the project into your solution.
 git clone https://github.com/mtnfog/philter-sdk-net.git
 ```
 
-To filter text:
+With an available running instance of Philter, to filter text:
 
 ```
 PhilterClient client = new PhilterClient("https://127.0.0.1:8080");
 string filteredText = client.Filter(text);
+```
+
+To filter text with explanation:
+
+```
+PhilterClient client = new PhilterClient("https://127.0.0.1:8080");
+ExplainResponse explainResponse = client.Explain(text);
 ```
 
 ## License
