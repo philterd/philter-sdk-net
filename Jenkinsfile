@@ -12,7 +12,9 @@ pipeline {
   stages {
     stage ('Build') {
       steps {
-          sh "./build.sh"
+        sh "sed -i s/BUILDNUM/${BUILD_NUMBER}/g philter-sdk-net.nuspec"
+        sh "./build.sh"
+        sh "git checkout philter-sdk-net.nuspec"
       }
     }
     stage ('Publish') {
@@ -24,8 +26,7 @@ pipeline {
           return false
         }
       }
-      steps {
-        sh "sed -i s/BUILDNUM/${BUILD_NUMBER}/g philter-sdk-net.nuspec"
+      steps {        
         sh "dotnet nuget push ${env.WORKSPACE}/bin/Release/philter-sdk-net.1.0.0.nupkg --api-key $NUGET_KEY --source $NUGET_SOURCE"
       }
     }
