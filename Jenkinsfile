@@ -18,7 +18,7 @@ pipeline {
         stage ('Publish') {
           when {
               expression {
-                  if (env.isPublish == "false") {
+                  if (env.isPublish == "true") {
                       return true
                   }
                   return false
