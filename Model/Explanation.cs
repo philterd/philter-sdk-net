@@ -19,12 +19,21 @@ using Newtonsoft.Json;
 
 namespace Philter.Model
 {
+    /// <summary>
+    /// An explanation of filtering.
+    /// </summary>
     public class Explanation
     {
+        /// <summary>
+        /// Text spans identified as sensitive information.
+        /// </summary>
         [JsonProperty("appliedSpans")]
-        public List<Span> appliedSpans { get; set; }
+        public List<Span> AppliedSpans { get; set; }
 
-        [JsonProperty("identifiedSpans")]
-        public List<Span> identifiedSpans { get; set; }
+        /// <summary>
+        /// Text spans identified but ignored due to conditions or other factors.
+        /// </summary>
+        [JsonProperty("ignoredSpans")]
+        public List<Span> IgnoredSpans { get; set; }
     }
 }

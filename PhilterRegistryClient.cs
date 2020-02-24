@@ -21,23 +21,37 @@ using Philter.Model;
 
 namespace Philter
 {
+    /// <summary>
+    /// A client for the Filter Profile Registry.
+    /// </summary>
     public class PhilterRegistryClient
     {
 
         private readonly RestClient _client;
 
-        public PhilterRegistryClient(string endpoint, bool ignoreSelfSignedCertificates)
+        /// <summary>
+        /// Creates a new client.
+        /// </summary>
+        /// <param name="endpoint">The Philter or Filter Profile Registry endpoint, e.g. https://localhost:8080.</param>
+        public PhilterRegistryClient(string endpoint)
         {
-
             _client = new RestClient(endpoint);
-
-            if (ignoreSelfSignedCertificates)
-            {
-                _client.RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
-            }
-
+        }
+        
+        /// <summary>
+        /// Creates a new Filter Registry client client.
+        /// </summary>
+        /// <param name="restClient">A custom RestClient.</param>
+        public PhilterRegistryClient(RestClient restClient)
+        {
+            _client = restClient;
         }
 
+        /// <summary>
+        /// Get the names of available filter profiles.
+        /// </summary>
+        /// <returns>A list of filter profile names.</returns>
+        /// <exception cref="ClientException"></exception>
         public List<string> Get()
         {
 
@@ -52,11 +66,17 @@ namespace Philter
             }
             else
             {
-                throw new PhilterException("Unable to get filter profiles.", response.ErrorException);
+                throw new ClientException("Unable to get filter profiles.", response.ErrorException);
             }
 
         }
 
+        /// <summary>
+        /// Get a filter profile.
+        /// </summary>
+        /// <param name="filterProfileName">The name of a filter profile.</param>
+        /// <returns>The filter profile.</returns>
+        /// <exception cref="ClientException"></exception>
         public string Get(string filterProfileName)
         {
 
@@ -72,11 +92,16 @@ namespace Philter
             }
             else
             {
-                throw new PhilterException("Unable to get filter profile.", response.ErrorException);
+                throw new ClientException("Unable to get filter profile.", response.ErrorException);
             }
 
         }
 
+        /// <summary>
+        /// Upload a filter profile. If a filter profile with the same name already exists it will be overwritten.
+        /// </summary>
+        /// <param name="filterProfile">The filter profile.</param>
+        /// <exception cref="ClientException"></exception>
         public void Save(string filterProfile)
         {
 
@@ -88,11 +113,16 @@ namespace Philter
 
             if (!response.IsSuccessful)
             {
-                throw new PhilterException("Unable to save filter profile.", response.ErrorException);
+                throw new ClientException("Unable to save filter profile.", response.ErrorException);
             }
 
         }
 
+        /// <summary>
+        /// Delete a filter profile.
+        /// </summary>
+        /// <param name="filterProfileName">The name of the filter profile to delete.</param>
+        /// <exception cref="ClientException"></exception>
         public void Delete(string filterProfileName)
         {
 
@@ -103,7 +133,7 @@ namespace Philter
 
             if (!response.IsSuccessful)
             {
-                throw new PhilterException("Unable to delete filter profile.", response.ErrorException);
+                throw new ClientException("Unable to delete filter profile.", response.ErrorException);
             }
 
         }

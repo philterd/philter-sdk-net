@@ -18,27 +18,51 @@ using Newtonsoft.Json;
 
 namespace Philter.Model
 {
+    /// <summary>
+    /// A span of text identified as sensitive information.
+    /// </summary>
     public class Span
     {
+        /// <summary>
+        /// The character index of the start of the span.
+        /// </summary>
         [JsonProperty("characterStart")]
-        public int characterStart { get; set; }
+        public int CharacterStart { get; set; }
 
+        /// <summary>
+        /// The character index of the end of the span.
+        /// </summary>
         [JsonProperty("characterEnd")]
-        public int characterEnd { get; set; }
+        public int CharacterEnd { get; set; }
 
-        [JsonProperty("context")]
-        public string context { get; set; }
-
-        [JsonProperty("documentId")]
-        public string documentId { get; set; }
-
-        [JsonProperty("confidence")]
-        public double confidence { get; set; }
-
-        [JsonProperty("replacement")]
-        public string replacement { get; set; }
-
+        /// <summary>
+        /// The type of sensitive information.
+        /// </summary>
         [JsonProperty("filterType")]
-        public FilterType filterType { get; set; }
+        public string FilterType { get; set; }
+        
+        /// <summary>
+        /// The context.
+        /// </summary>
+        [JsonProperty("context")]
+        public string Context { get; set; }
+
+        /// <summary>
+        /// The document ID.
+        /// </summary>
+        [JsonProperty("documentId")]
+        public string DocumentId { get; set; }
+
+        /// <summary>
+        /// The confidence of the span.
+        /// </summary>
+        [JsonProperty("confidence")]
+        public double Confidence { get; set; }
+
+        /// <summary>
+        /// The value used to replace the span's text.
+        /// </summary>
+        [JsonProperty("replacement")]
+        public string Replacement { get; set; }
     }
 }

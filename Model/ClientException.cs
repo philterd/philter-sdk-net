@@ -18,14 +18,26 @@ using System;
 
 namespace Philter.Model
 {
-    public class PhilterException : Exception
+    /// <summary>
+    /// An exception thrown during the execution of a Philter API request.
+    /// </summary>
+    public class ClientException : Exception
     {
-        public PhilterException(string message) : base(message)
+        /// <summary>
+        /// Creates a new exception.
+        /// </summary>
+        /// <param name="message">The message of the exception.</param>
+        public ClientException(string message) : base(message)
         {
 
         }
 
-        public PhilterException(string message, Exception ex) : base(message, ex)
+        /// <summary>
+        /// Creates a new exception.
+        /// </summary>
+        /// <param name="message">The message of the exception.</param>
+        /// <param name="ex">The underlying exception.</param>
+        public ClientException(string message, Exception ex) : base(message, ex)
         {
 
         }

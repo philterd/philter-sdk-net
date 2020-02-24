@@ -18,12 +18,33 @@ using Newtonsoft.Json;
 
 namespace Philter.Model
 {
-    public class FilterType
+    /// <summary>
+    /// Response to an explain API request.
+    /// </summary>
+    public class ExplainResponse
     {
-        [JsonProperty("type")]
-        public string type { get; set; }
+        /// <summary>
+        /// The filtered text.
+        /// </summary>
+        [JsonProperty("filteredText")]
+        public string FilteredText { get; set; }
 
-        [JsonProperty("deterministic")]
-        public string deterministic { get; set; }
+        /// <summary>
+        /// The context.
+        /// </summary>
+        [JsonProperty("context")]
+        public string Context { get; set; }
+
+        /// <summary>
+        /// The document ID.
+        /// </summary>
+        [JsonProperty("documentId")]
+        public string DocumentId { get; set; }
+
+        /// <summary>
+        /// The explanation.
+        /// </summary>
+        [JsonProperty("explanation")]
+        public Explanation Explanation { get; set; }
     }
 }

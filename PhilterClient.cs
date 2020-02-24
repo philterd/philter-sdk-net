@@ -32,18 +32,32 @@ namespace Philter
 
         private readonly RestClient _client;
 
-        public PhilterClient(string endpoint, bool ignoreSelfSignedCertificates)
+        /// <summary>
+        /// Creates a new Philter client.
+        /// </summary>
+        /// <param name="endpoint">The Philter API endpoint, e.g. https://localhost:8080.</param>
+        public PhilterClient(string endpoint)
         {
-
             _client = new RestClient(endpoint);
-
-            if (ignoreSelfSignedCertificates)
-            {
-                _client.RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
-            }
-
         }
 
+        /// <summary>
+        /// Creates a new Philter client.
+        /// </summary>
+        /// <param name="restClient">A custom RestClient.</param>
+        public PhilterClient(RestClient restClient)
+        {
+            _client = restClient;
+        }
+        
+        /// <summary>
+        /// Sends text to Philter for filtering.
+        /// </summary>
+        /// <param name="text">The text to be filtered.</param>
+        /// <param name="context">The context.</param>
+        /// <param name="filterProfileName">The name of the filter profile to apply.</param>
+        /// <returns>The filtered text.</returns>
+        /// <exception cref="ClientException"></exception>
         public string Filter(string text, string context, string filterProfileName)
         {
 
@@ -61,12 +75,20 @@ namespace Philter
             }
             else
             {
-                throw new PhilterException("Unable to filter text. Check Philter's status.", response.ErrorException);
+                throw new ClientException("Unable to filter text. Check Philter's status.", response.ErrorException);
             }
 
         }
 
-        public FilterResponse Explain(string text, string context, string filterProfileName)
+        /// <summary>
+        /// Sends text to Philter for filtering with an explanation response.
+        /// </summary>
+        /// <param name="text">The text to be filtered.</param>
+        /// <param name="context">The context.</param>
+        /// <param name="filterProfileName">The name of the filter profile to apply.</param>
+        /// <returns>The filtered text with the filtering explanation.</returns>
+        /// <exception cref="ClientException"></exception>
+        public ExplainResponse Explain(string text, string context, string filterProfileName)
         {
 
             var request = new RestRequest("api/explain", Method.POST);
@@ -79,15 +101,21 @@ namespace Philter
 
             if (response.IsSuccessful)
             {
-                return JsonConvert.DeserializeObject<FilterResponse>(response.Content);
+                return JsonConvert.DeserializeObject<ExplainResponse>(response.Content);
             }
             else
             {
-                throw new PhilterException("Unable to filter text. Check Philter's status.", response.ErrorException);
+                throw new ClientException("Unable to filter text. Check Philter's status.", response.ErrorException);
             }
 
         }
 
+        /// <summary>
+        /// Gets the replacements made by Philter in a document.
+        /// </summary>
+        /// <param name="documentId">The document ID.</param>
+        /// <returns>A list of spans that were identified as sensitive information in the given document.</returns>
+        /// <exception cref="ClientException"></exception>
         public List<ResponseSpan> GetReplacements(string documentId)
         {
 
@@ -101,7 +129,7 @@ namespace Philter
 
             if (response.StatusCode == HttpStatusCode.ServiceUnavailable)
             {
-                throw new ReplacementStoreDisabledException("Philter's replacement store is not enabled.");
+                throw new ClientException("Philter's replacement store is not enabled.");
             }
             else
             {
@@ -119,20 +147,30 @@ namespace Philter
                 }
                 else
                 {
-                    throw new PhilterException("Unable to get replacements. Check Philter's status.", response.ErrorException);
+                    throw new ClientException("Unable to get replacements. Check Philter's status.", response.ErrorException);
                 }
             }
 
         }
 
-        public bool GetStatus()
+        /// <summary>
+        /// Gets the status of Philter.
+        /// </summary>
+        /// <returns>The status of Philter.</returns>
+        /// <exception cref="ClientException"></exception>
+        public StatusResponse GetStatus()
         {
 
             var request = new RestRequest("api/status", Method.GET);
 
             IRestResponse response = _client.Execute(request);
 
-            return response.IsSuccessful;
+            if (response.IsSuccessful)
+            {
+                return JsonConvert.DeserializeObject<StatusResponse>(response.Content);
+            }
+
+            throw new ClientException("Unable to get status.", response.ErrorException);
 
         }
 

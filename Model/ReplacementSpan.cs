@@ -18,30 +18,57 @@ using Newtonsoft.Json;
 
 namespace Philter.Model
 {
+    /// <summary>
+    /// A span of text identified as sensitive information.
+    /// </summary>
     public class ResponseSpan
     {
 
+        /// <summary>
+        /// The character index of the start of the span.
+        /// </summary>
         [JsonProperty("characterStart")]
         public int CharacterStart { get; set; }
 
+        /// <summary>
+        /// The character index of the end of the span.
+        /// </summary>
         [JsonProperty("characterEnd")]
         public int CharacterEnd { get; set; }
 
+        /// <summary>
+        /// The type of sensitive information.
+        /// </summary>
         [JsonProperty("filterType")]
         public string FilterType { get; set; }
 
+        /// <summary>
+        /// The text contained within the span.
+        /// </summary>
         [JsonProperty("text")]
         public string Text { get; set; }
 
+        /// <summary>
+        /// The context.
+        /// </summary>
         [JsonProperty("context")]
         public string Context { get; set; }
 
+        /// <summary>
+        /// The document ID.
+        /// </summary>
         [JsonProperty("documentId")]
         public string DocumentId { get; set; }
 
+        /// <summary>
+        /// The confidence of the span.
+        /// </summary>
         [JsonProperty("confidence")]
         public double Confidence { get; set; }
 
+        /// <summary>
+        /// The value used to replace the span's text.
+        /// </summary>
         [JsonProperty("replacement")]
         public string Replacement { get; set; }
 

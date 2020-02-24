@@ -14,20 +14,25 @@
  * the License.
  ******************************************************************************/
 
-using System;
+using Newtonsoft.Json;
 
 namespace Philter.Model
 {
-    public class ReplacementStoreDisabledException : PhilterException
+    /// <summary>
+    /// Response to a status API request.
+    /// </summary>
+    public class StatusResponse
     {
-        public ReplacementStoreDisabledException(string message) : base(message)
-        {
-
-        }
-
-        public ReplacementStoreDisabledException(string message, Exception ex) : base(message, ex)
-        {
-
-        }
+        /// <summary>
+        /// The status as reported by Philter.
+        /// </summary>
+        [JsonProperty("status")]
+        public string Status { get; set; }
+        
+        /// <summary>
+        /// The version of Philter.
+        /// </summary>
+        [JsonProperty("version")]
+        public string Version { get; set; }
     }
 }
