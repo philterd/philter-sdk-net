@@ -25,7 +25,7 @@ pipeline {
               }
           }
           steps {
-              sh "dotnet nuget push philter-sdk-net.1.0.0.nupkg -s https://api.nuget.org/v3/index.json"
+              sh "dotnet nuget push philter-sdk-net.1.0.0.nupkg --source $NUGET_SOURCE"
           }
         }
     }
