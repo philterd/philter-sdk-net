@@ -116,7 +116,7 @@ namespace Philter
         /// <param name="documentId">The document ID.</param>
         /// <returns>A list of spans that were identified as sensitive information in the given document.</returns>
         /// <exception cref="ClientException"></exception>
-        public List<ResponseSpan> GetReplacements(string documentId)
+        public List<Span> GetReplacements(string documentId)
         {
 
             var request = new RestRequest("api/replacements", Method.GET);
@@ -135,19 +135,19 @@ namespace Philter
             {
                 if (response.IsSuccessful)
                 {
-                    ResponseSpan[] spans = JsonConvert.DeserializeObject<ResponseSpan[]>(response.Content);
+                    Span[] spans = JsonConvert.DeserializeObject<Span[]>(response.Content);
                     if (spans != null)
                     {
                         return spans.ToList();
                     }
                     else
                     {
-                        return new List<ResponseSpan>();
+                        return new List<Span>();
                     }
                 }
                 else
                 {
-                    throw new ClientException("Unable to get replacements. Check Philter's status.", response.ErrorException);
+                    throw new ClientException("Unable to get spans. Check Philter's status.", response.ErrorException);
                 }
             }
 

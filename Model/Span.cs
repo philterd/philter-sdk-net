@@ -42,6 +42,12 @@ namespace Philter.Model
         public string FilterType { get; set; }
         
         /// <summary>
+        /// The text of the span.
+        /// </summary>
+        [JsonProperty("text")]
+        public string Text { get; set; }
+        
+        /// <summary>
         /// The context.
         /// </summary>
         [JsonProperty("context")]
