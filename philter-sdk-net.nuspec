@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>philter-sdk-net</id>
-    <version>1.0.0.BUILDNUM</version>
+    <version>1.0.0</version>
     <title>Philter .NET SDK</title>
     <authors>Mountain Fog, Inc.</authors>
     <owners>Mountain Fog, Inc.</owners>
@@ -17,6 +17,10 @@
     <tags>philter pii phi filtering</tags>
     <dependencies>
       <group targetFramework="netstandard2.1">
+        <dependency id="Newtonsoft.Json" version="12.0.3" />
+        <dependency id="RestSharp" version="106.10.1" />
+      </group>
+      <group targetFramework="net4.5.2">
         <dependency id="Newtonsoft.Json" version="12.0.3" />
         <dependency id="RestSharp" version="106.10.1" />
       </group>

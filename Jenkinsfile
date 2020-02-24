@@ -12,9 +12,9 @@ pipeline {
   stages {
     stage ('Build') {
       steps {
-        sh "sed -i s/BUILDNUM/${BUILD_NUMBER}/g philter-sdk-net.nuspec"
-        sh "./build.sh"
-        sh "git checkout philter-sdk-net.nuspec"
+        sh "dotnet restore"
+        sh "dotnet build -c Release"
+        sh "dotnet pack -c Release --version-suffix ${BUILD_NUMBER}"
       }
     }
     stage ('Publish') {
