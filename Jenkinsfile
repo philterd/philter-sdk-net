@@ -25,7 +25,7 @@ pipeline {
               }
           }
           steps {
-              sh "dotnet nuget push philter-sdk-net.1.0.0.nupkg --source $NUGET_SOURCE"
+              sh "dotnet nuget push philter-sdk-net.1.0.0.nupkg --api-key $NUGET_KEY --source $NUGET_SOURCE"
           }
         }
     }
