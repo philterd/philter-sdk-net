@@ -19,7 +19,6 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 using RestSharp;
-using System;
 using System.Net;
 
 namespace Philter
@@ -67,7 +66,7 @@ namespace Philter
             request.AddHeader("accept", "text/plain");
             request.AddParameter("text/plain", text, ParameterType.RequestBody);
 
-            IRestResponse response = _client.Execute(request);
+            var response = _client.Execute(request);
 
             if (response.IsSuccessful)
             {
@@ -97,7 +96,7 @@ namespace Philter
             request.AddHeader("accept", "application/json");
             request.AddParameter("text/plain", text, ParameterType.RequestBody);
 
-            IRestResponse response = _client.Execute(request);
+            var response = _client.Execute(request);
 
             if (response.IsSuccessful)
             {
@@ -123,10 +122,8 @@ namespace Philter
             request.AddParameter("d", documentId);
             request.AddHeader("accept", "application/json");
 
-            IRestResponse response = _client.Execute(request);
-
-            Console.WriteLine(response.StatusCode);
-
+            var response = _client.Execute(request);
+            
             if (response.StatusCode == HttpStatusCode.ServiceUnavailable)
             {
                 throw new ClientException("Philter's replacement store is not enabled.");
@@ -163,7 +160,7 @@ namespace Philter
 
             var request = new RestRequest("api/status", Method.GET);
 
-            IRestResponse response = _client.Execute(request);
+            var response = _client.Execute(request);
 
             if (response.IsSuccessful)
             {

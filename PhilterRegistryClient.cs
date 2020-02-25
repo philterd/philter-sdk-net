@@ -58,7 +58,7 @@ namespace Philter
             var request = new RestRequest("api/profiles", Method.GET);
             request.AddHeader("accept", "application/json");
 
-            IRestResponse response = _client.Execute(request);
+            var response = _client.Execute(request);
 
             if (response.IsSuccessful)
             {
@@ -84,7 +84,7 @@ namespace Philter
             request.AddParameter("filterProfileName", filterProfileName, ParameterType.UrlSegment);
             request.AddHeader("accept", "application/json");
 
-            IRestResponse response = _client.Execute(request);
+            var response = _client.Execute(request);
 
             if (response.IsSuccessful)
             {
@@ -109,7 +109,7 @@ namespace Philter
             request.AddHeader("content-type", "application/json");
             request.AddParameter("application/json", filterProfile, ParameterType.RequestBody);
 
-            IRestResponse response = _client.Execute(request);
+            var response = _client.Execute(request);
 
             if (!response.IsSuccessful)
             {
@@ -129,7 +129,7 @@ namespace Philter
             var request = new RestRequest("api/profiles/{filterProfileName}", Method.DELETE);
             request.AddParameter("filterProfileName", filterProfileName, ParameterType.UrlSegment);
 
-            IRestResponse response = _client.Execute(request);
+            var response = _client.Execute(request);
 
             if (!response.IsSuccessful)
             {
