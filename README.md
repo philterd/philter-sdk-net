@@ -12,7 +12,9 @@ The project can be built using Visual Studio or other .NET IDE. It can be built 
 
 ## Usage
 
-Clone and import the project into your solution.
+Install using [NuGet](https://www.nuget.org/packages/philter-sdk-net/).
+
+Or, clone and import the project into your solution.
 
 ```
 git clone https://github.com/mtnfog/philter-sdk-net.git
