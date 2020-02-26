@@ -67,7 +67,7 @@ namespace Philter
             request.AddParameter("text/plain", text, ParameterType.RequestBody);
 
             var response = _client.Execute(request);
-
+ 
             if (response.IsSuccessful)
             {
                 return response.Content;
