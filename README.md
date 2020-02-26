@@ -14,6 +14,8 @@ The project can be built using Visual Studio or other .NET IDE. It can be built 
 
 Install using [NuGet](https://www.nuget.org/packages/philter-sdk-net/).
 
+[![nuget](https://img.shields.io/nuget/v/philter-sdk-net.svg)](https://www.nuget.org/packages/philter-sdk-net/)
+
 Or, clone and import the project into your solution.
 
 ```
