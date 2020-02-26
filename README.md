@@ -1,8 +1,14 @@
 # Philter SDK for .NET
 
-The **Philter SDK for .NET** enables .NET developers to easily work with Philter. [Philter](https://www.mtnfog.com/products/philter/) identifies and manipulates sensitive information like Protected Health Information (PHI) and personally identifiable information (PII) from natural language text. 
+The **Philter SDK for .NET** enables .NET developers to easily work with Philter. [Philter](https://www.mtnfog.com/products/philter/) identifies and manipulates sensitive information like Protected Health Information (PHI) and personally identifiable information (PII) from natural language text.
+
+Refer to [Philter API](https://philter.mtnfog.com/api/) documentation for details on the methods available.
 
 [![Build Status](https://travis-ci.org/mtnfog/philter-sdk-net.svg?branch=master)](https://travis-ci.org/mtnfog/philter-sdk-net)
+
+## Build
+
+The project can be built using Visual Studio or other .NET IDE. It can be built via the command line using either the `build.bat` or `build.sh` scripts depending on your platform.
 
 ## Usage
 
