@@ -10,7 +10,7 @@ namespace Philter
     public class PhilterClientTest
     {
 
-        FluentSimulator simulator = new FluentSimulator("http://localhost:8080/");
+        FluentSimulator simulator = new FluentSimulator("http://localhost:18081/");
 
         [TestInitialize()]
         public void Initialize()
@@ -52,7 +52,7 @@ namespace Philter
         {
             RestClient restClient = new RestClient();
             restClient.RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
-            restClient.BaseUrl = new Uri("http://localhost:8080/");
+            restClient.BaseUrl = new Uri("http://localhost:18081/");
 
             return restClient;
         }
