@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>philter-sdk-net</id>
-    <version>JENKINSSETVERSION</version>
+    <version>1.0.0</version>
     <title>Philter .NET SDK</title>
     <authors>Mountain Fog, Inc.</authors>
     <owners>Mountain Fog, Inc.</owners>
