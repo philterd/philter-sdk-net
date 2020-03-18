@@ -24,7 +24,7 @@ namespace Philter
     /// <summary>
     /// A client for the Filter Profile Registry.
     /// </summary>
-    public class PhilterRegistryClient
+    public class FilterProfileRegistryClient
     {
 
         private readonly RestClient _client;
@@ -33,7 +33,7 @@ namespace Philter
         /// Creates a new client.
         /// </summary>
         /// <param name="endpoint">The Philter or Filter Profile Registry endpoint, e.g. https://localhost:8080.</param>
-        public PhilterRegistryClient(string endpoint)
+        public FilterProfileRegistryClient(string endpoint)
         {
             _client = new RestClient(endpoint);
         }
@@ -42,7 +42,7 @@ namespace Philter
         /// Creates a new Filter Registry client client.
         /// </summary>
         /// <param name="restClient">A custom RestClient.</param>
-        public PhilterRegistryClient(RestClient restClient)
+        public FilterProfileRegistryClient(RestClient restClient)
         {
             _client = restClient;
         }
