@@ -7,7 +7,7 @@
     <Product>Philter .NET SDK</Product>
     <Copyright>Copyright 2020 Mountain Fog, Inc.</Copyright>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <Description>The Philter SDK for .NET enables .NET developers to easily work with Philter. Philter identifies and manipulates sensitive information, such as Protected Health Information (PHI) and personally identifiable information (PII), from natural language text.</Description>
+    <Description>The Philter SDK for .NET enables .NET developers to easily integrate their applications with Philter to identify and remove sensitive information, such as Protected Health Information (PHI) and personally identifiable information (PII), from natural language text.</Description>
     <PackageProjectUrl>https://github.com/mtnfog/philter-sdk-net</PackageProjectUrl>
     <RepositoryUrl>https://github.com/mtnfog/philter-sdk-net</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
