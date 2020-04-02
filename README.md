@@ -36,6 +36,10 @@ PhilterClient client = new PhilterClient("https://127.0.0.1:8080");
 ExplainResponse explainResponse = client.Explain(text);
 ```
 
+## Release History
+
+* 1.0.0 - Initial release.
+
 ## License
 
 This project is licensed under the Apache Software License, version 2.0.

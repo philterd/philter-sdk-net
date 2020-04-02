@@ -3,12 +3,31 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net452</TargetFrameworks>
     <RootNamespace>Philter</RootNamespace>
+    <Authors>Mountain Fog, Inc.</Authors>
+    <Product>Philter .NET SDK</Product>
+    <Copyright>Copyright 2020 Mountain Fog, Inc.</Copyright>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <Description>The Philter SDK for .NET enables .NET developers to easily work with Philter. Philter identifies and manipulates sensitive information, such as Protected Health Information (PHI) and personally identifiable information (PII), from natural language text.</Description>
+    <PackageProjectUrl>https://github.com/mtnfog/philter-sdk-net</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/mtnfog/philter-sdk-net</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>philter pii phi filtering</PackageTags>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageReleaseNotes>See https://github.com/mtnfog/philter-sdk-net for a list of changes.</PackageReleaseNotes>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="RestSharp" Version="106.10.1" />
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" PrivateAssets="All" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\images\icon.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
