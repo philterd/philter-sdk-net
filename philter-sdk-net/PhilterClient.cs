@@ -14,6 +14,7 @@
  * the License.
  ******************************************************************************/
 
+using System;
 using Philter.Model;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -60,14 +61,35 @@ namespace Philter
         public string Filter(string text, string context, string filterProfileName)
         {
 
+            return Filter(text, context, String.Empty, filterProfileName);
+
+        }
+
+        /// <summary>
+        /// Sends text to Philter for filtering.
+        /// </summary>
+        /// <param name="text">The text to be filtered.</param>
+        /// <param name="context">The context.</param>
+        /// <param name="documentId">The document ID.</param>
+        /// <param name="filterProfileName">The name of the filter profile to apply.</param>
+        /// <returns>The filtered text.</returns>
+        /// <exception cref="ClientException"></exception>
+        public string Filter(string text, string context, string documentId, string filterProfileName)
+        {
+
             var request = new RestRequest("api/filter", Method.POST);
             request.AddParameter("c", context);
             request.AddParameter("p", filterProfileName);
             request.AddHeader("accept", "text/plain");
             request.AddParameter("text/plain", text, ParameterType.RequestBody);
 
+            if (documentId != String.Empty)
+            {
+                request.AddParameter("d", documentId);
+            }
+
             var response = _client.Execute(request);
- 
+
             if (response.IsSuccessful)
             {
                 return response.Content;
@@ -90,11 +112,32 @@ namespace Philter
         public ExplainResponse Explain(string text, string context, string filterProfileName)
         {
 
+            return Explain(text, context, String.Empty, filterProfileName);
+
+        }
+
+        /// <summary>
+        /// Sends text to Philter for filtering with an explanation response.
+        /// </summary>
+        /// <param name="text">The text to be filtered.</param>
+        /// <param name="context">The context.</param>
+        /// <param name="documentId">The document ID.</param>
+        /// <param name="filterProfileName">The name of the filter profile to apply.</param>
+        /// <returns>The filtered text with the filtering explanation.</returns>
+        /// <exception cref="ClientException"></exception>
+        public ExplainResponse Explain(string text, string context, string documentId, string filterProfileName)
+        {
+
             var request = new RestRequest("api/explain", Method.POST);
             request.AddParameter("c", context);
             request.AddParameter("p", filterProfileName);
             request.AddHeader("accept", "application/json");
             request.AddParameter("text/plain", text, ParameterType.RequestBody);
+
+            if (documentId != String.Empty)
+            {
+                request.AddParameter("d", documentId);
+            }
 
             var response = _client.Execute(request);
 

@@ -10,26 +10,25 @@ namespace Philter
     [TestClass]
     public class PhilterClientTest
     {
-
-        FluentSimulator simulator = new FluentSimulator("http://localhost:18081/");
+        readonly FluentSimulator _simulator = new FluentSimulator("http://localhost:18081/");
 
         [TestInitialize()]
         public void Initialize()
         {                                                
-            simulator.Start();
+            _simulator.Start();
         }
 
         [TestCleanup]
         public void CleanUp()
         {
-            simulator.Stop();
+            _simulator.Stop();
         }
 
         [TestMethod]
         public void FilterTest()
         {
 
-            simulator.Post("/api/filter").Responds("His SSN was {{{REDACTED-ssn}}}.").WithCode(200);
+            _simulator.Post("/api/filter").Responds("His SSN was {{{REDACTED-ssn}}}.").WithCode(200);
 
             PhilterClient philterClient = new PhilterClient(GetClient());
             string filteredText = philterClient.Filter("His SSN was 123-45-6789.", "context", "default");
@@ -39,10 +38,23 @@ namespace Philter
         }
 
         [TestMethod]
+        public void FilterWithDocumentIdTest()
+        {
+
+            _simulator.Post("/api/filter").Responds("His SSN was {{{REDACTED-ssn}}}.").WithCode(200);
+
+            PhilterClient philterClient = new PhilterClient(GetClient());
+            string filteredText = philterClient.Filter("His SSN was 123-45-6789.", "context", "docid", "default");
+
+            Assert.AreEqual("His SSN was {{{REDACTED-ssn}}}.", filteredText);
+
+        }
+
+        [TestMethod]
         public void GetReplacementsBadRequestTest()
         {
 
-            simulator.Get("/api/replacements").WithParameter("d", "").Responds("").WithCode(400);
+            _simulator.Get("/api/replacements").WithParameter("d", "").Responds("").WithCode(400);
 
             PhilterClient philterClient = new PhilterClient(GetClient());
             Assert.ThrowsException<ClientException>(() => philterClient.Filter("His SSN was 123-45-6789.", "context", "default"));
@@ -53,17 +65,21 @@ namespace Philter
         public void GetReplacementsTest()
         {
 
-            Span span = new Span();
-            span.CharacterStart = 1;
-            span.CharacterEnd = 2;
-            span.Text = "A";
+            Span span = new Span
+            {
+                CharacterStart = 1,
+                CharacterEnd = 2,
+                Text = "A"
+            };
 
-            List<Span> spans = new List<Span>();
-            spans.Add(span);
+            List<Span> spans = new List<Span>
+            {
+                span
+            };
 
             string json = Newtonsoft.Json.JsonConvert.SerializeObject(spans);
 
-            simulator.Get("/api/replacements").WithParameter("d", "1234").Responds(json).WithCode(200);
+            _simulator.Get("/api/replacements").WithParameter("d", "1234").Responds(json).WithCode(200);
 
             PhilterClient philterClient = new PhilterClient(GetClient());
             List<Span> replacementSpans = philterClient.GetReplacements("1234");
@@ -77,17 +93,23 @@ namespace Philter
         public void ExplainTest()
         {
 
-            Span span = new Span();
-            span.CharacterStart = 1;
-            span.CharacterEnd = 2;
-            span.Text = "A";
+            Span span = new Span
+            {
+                CharacterStart = 1,
+                CharacterEnd = 2,
+                Text = "A"
+            };
 
-            List<Span> spans = new List<Span>();
-            spans.Add(span);
+            List<Span> spans = new List<Span>
+            {
+                span
+            };
 
-            Explanation explanation = new Explanation();
-            explanation.AppliedSpans = spans;
-            explanation.IgnoredSpans = new List<Span>();
+            Explanation explanation = new Explanation
+            {
+                AppliedSpans = spans,
+                IgnoredSpans = new List<Span>()
+            };
 
             ExplainResponse mockResponse = new ExplainResponse();
             mockResponse.FilteredText = "His SSN was {{{REDACTED-ssn}}}.";
@@ -95,7 +117,7 @@ namespace Philter
 
             string json = Newtonsoft.Json.JsonConvert.SerializeObject(mockResponse);
 
-            simulator.Post("/api/explain").Responds(json).WithCode(200);
+            _simulator.Post("/api/explain").Responds(json).WithCode(200);
 
             PhilterClient philterClient = new PhilterClient(GetClient());
             ExplainResponse explainResponse = philterClient.Explain("His SSN was 123-45-6789.", "context", "invalid");
@@ -107,10 +129,53 @@ namespace Philter
         }
 
         [TestMethod]
+        public void ExplainWithDocumentIdTest()
+        {
+
+            Span span = new Span
+            {
+                CharacterStart = 1,
+                CharacterEnd = 2,
+                Text = "A"
+            };
+
+            List<Span> spans = new List<Span>
+            {
+                span
+            };
+
+            Explanation explanation = new Explanation
+            {
+                AppliedSpans = spans,
+                IgnoredSpans = new List<Span>()
+            };
+
+            ExplainResponse mockResponse = new ExplainResponse
+            {
+                FilteredText = "His SSN was {{{REDACTED-ssn}}}.",
+                DocumentId = "docid",
+                Explanation = explanation
+            };
+
+            string json = Newtonsoft.Json.JsonConvert.SerializeObject(mockResponse);
+
+            _simulator.Post("/api/explain").Responds(json).WithCode(200);
+
+            PhilterClient philterClient = new PhilterClient(GetClient());
+            ExplainResponse explainResponse = philterClient.Explain("His SSN was 123-45-6789.", "context", "docid", "invalid");
+
+            Assert.IsNotNull(explainResponse);
+            Assert.AreEqual(1, explainResponse.Explanation.AppliedSpans.Count);
+            Assert.AreEqual(0, explainResponse.Explanation.IgnoredSpans.Count);
+            Assert.AreEqual("docid", explainResponse.DocumentId);
+
+        }
+
+        [TestMethod]
         public void FilterBadRequestTest()
         {
 
-            simulator.Post("/api/filter").Responds("His SSN was {{{REDACTED-ssn}}}.").WithCode(400);
+            _simulator.Post("/api/filter").Responds("His SSN was {{{REDACTED-ssn}}}.").WithCode(400);
             PhilterClient philterClient = new PhilterClient(GetClient());
             Assert.ThrowsException<ClientException>(() => philterClient.Filter("His SSN was 123-45-6789.", "context", "invalid"));
 
@@ -120,7 +185,7 @@ namespace Philter
         public void StatusText()
         {
 
-            simulator.Get("/api/status").Responds("{\"Status\": \"Healthy\", \"Version\": \"1.0.0\"}").WithCode(200);
+            _simulator.Get("/api/status").Responds("{\"Status\": \"Healthy\", \"Version\": \"1.0.0\"}").WithCode(200);
 
             PhilterClient philterClient = new PhilterClient(GetClient());
             StatusResponse statusResponse = philterClient.GetStatus();
@@ -132,9 +197,11 @@ namespace Philter
 
         private RestClient GetClient()
         {
-            RestClient restClient = new RestClient();
-            restClient.RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
-            restClient.BaseUrl = new Uri("http://localhost:18081/");
+            RestClient restClient = new RestClient
+            {
+                RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true,
+                BaseUrl = new Uri("http://localhost:18081/")
+            };
 
             return restClient;
         }
