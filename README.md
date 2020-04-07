@@ -38,6 +38,7 @@ ExplainResponse explainResponse = client.Explain(text);
 
 ## Release History
 
+* 1.1.0 - Added authentication support.
 * 1.0.0 - Initial release.
 
 ## License
