@@ -31,7 +31,8 @@ namespace Philter
     {
 
         private readonly RestClient _client;
-
+        private readonly string _token;
+        
         /// <summary>
         /// Creates a new Philter client.
         /// </summary>
@@ -40,7 +41,18 @@ namespace Philter
         {
             _client = new RestClient(endpoint);
         }
-
+        
+        /// <summary>
+        /// Creates a new Philter client.
+        /// </summary>
+        /// <param name="endpoint">The Philter API endpoint, e.g. https://localhost:8080.</param>
+        /// <<param name="token">The authentication token or <code>null</code>.</param>
+        public PhilterClient(string endpoint, string token)
+        {
+            _client = new RestClient(endpoint);
+            _token = token;
+        }
+        
         /// <summary>
         /// Creates a new Philter client.
         /// </summary>
@@ -48,6 +60,17 @@ namespace Philter
         public PhilterClient(RestClient restClient)
         {
             _client = restClient;
+        }
+
+        /// <summary>
+        /// Creates a new Philter client.
+        /// </summary>
+        /// <param name="restClient">A custom RestClient.</param>
+        /// <<param name="token">The authentication token or <code>null</code>.</param>
+        public PhilterClient(RestClient restClient, string token)
+        {
+            _client = restClient;
+            _token = token;
         }
         
         /// <summary>
@@ -60,9 +83,7 @@ namespace Philter
         /// <exception cref="ClientException"></exception>
         public string Filter(string text, string context, string filterProfileName)
         {
-
             return Filter(text, context, String.Empty, filterProfileName);
-
         }
 
         /// <summary>
@@ -83,6 +104,11 @@ namespace Philter
             request.AddHeader("accept", "text/plain");
             request.AddParameter("text/plain", text, ParameterType.RequestBody);
 
+            if (_token != null)
+            {
+                request.AddHeader("Authentication", "token:" + _token);
+            }
+            
             if (documentId != String.Empty)
             {
                 request.AddParameter("d", documentId);
@@ -94,10 +120,8 @@ namespace Philter
             {
                 return response.Content;
             }
-            else
-            {
-                throw new ClientException("Unable to filter text. Check Philter's status.", response.ErrorException);
-            }
+
+            throw new ClientException("Unable to filter text. Check Philter's status.", response.ErrorException);
 
         }
 
@@ -111,9 +135,7 @@ namespace Philter
         /// <exception cref="ClientException"></exception>
         public ExplainResponse Explain(string text, string context, string filterProfileName)
         {
-
             return Explain(text, context, String.Empty, filterProfileName);
-
         }
 
         /// <summary>
@@ -138,6 +160,11 @@ namespace Philter
             {
                 request.AddParameter("d", documentId);
             }
+            
+            if (_token != null)
+            {
+                request.AddHeader("Authentication", "token:" + _token);
+            }
 
             var response = _client.Execute(request);
 
@@ -145,10 +172,8 @@ namespace Philter
             {
                 return JsonConvert.DeserializeObject<ExplainResponse>(response.Content);
             }
-            else
-            {
-                throw new ClientException("Unable to filter text. Check Philter's status.", response.ErrorException);
-            }
+
+            throw new ClientException("Unable to filter text. Check Philter's status.", response.ErrorException);
 
         }
 
@@ -165,31 +190,31 @@ namespace Philter
             request.AddParameter("d", documentId);
             request.AddHeader("accept", "application/json");
 
+            if (_token != null)
+            {
+                request.AddHeader("Authentication", "token:" + _token);
+            }
+            
             var response = _client.Execute(request);
             
             if (response.StatusCode == HttpStatusCode.ServiceUnavailable)
             {
                 throw new ClientException("Philter's replacement store is not enabled.");
             }
-            else
+
+            if (response.IsSuccessful)
             {
-                if (response.IsSuccessful)
+                Span[] spans = JsonConvert.DeserializeObject<Span[]>(response.Content);
+                if (spans != null)
                 {
-                    Span[] spans = JsonConvert.DeserializeObject<Span[]>(response.Content);
-                    if (spans != null)
-                    {
-                        return spans.ToList();
-                    }
-                    else
-                    {
-                        return new List<Span>();
-                    }
+                    return spans.ToList();
                 }
-                else
-                {
-                    throw new ClientException("Unable to get spans. Check Philter's status.", response.ErrorException);
-                }
+
+                return new List<Span>();
+
             }
+
+            throw new ClientException("Unable to get spans. Check Philter's status.", response.ErrorException);
 
         }
 

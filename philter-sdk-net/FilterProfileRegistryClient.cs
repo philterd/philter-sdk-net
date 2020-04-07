@@ -28,6 +28,7 @@ namespace Philter
     {
 
         private readonly RestClient _client;
+        private readonly string _token;
 
         /// <summary>
         /// Creates a new client.
@@ -39,12 +40,34 @@ namespace Philter
         }
         
         /// <summary>
+        /// Creates a new client.
+        /// </summary>
+        /// <param name="endpoint">The Philter or Filter Profile Registry endpoint, e.g. https://localhost:8080.</param>
+        /// <<param name="token">The authentication token or <code>null</code>.</param>
+        public FilterProfileRegistryClient(string endpoint, string token)
+        {
+            _client = new RestClient(endpoint);
+            _token = token;
+        }
+        
+        /// <summary>
         /// Creates a new Filter Registry client client.
         /// </summary>
         /// <param name="restClient">A custom RestClient.</param>
         public FilterProfileRegistryClient(RestClient restClient)
         {
             _client = restClient;
+        }
+        
+        /// <summary>
+        /// Creates a new Filter Registry client client.
+        /// </summary>
+        /// <param name="restClient">A custom RestClient.</param>
+        /// <<param name="token">The authentication token or <code>null</code>.</param>
+        public FilterProfileRegistryClient(RestClient restClient, string token)
+        {
+            _client = restClient;
+            _token = token;
         }
 
         /// <summary>
@@ -58,16 +81,19 @@ namespace Philter
             var request = new RestRequest("api/profiles", Method.GET);
             request.AddHeader("accept", "application/json");
 
+            if (_token != null)
+            {
+                request.AddHeader("Authentication", "token:" + _token);
+            }
+            
             var response = _client.Execute(request);
 
             if (response.IsSuccessful)
             {
                 return JsonConvert.DeserializeObject<List<string>>(response.Content);
             }
-            else
-            {
-                throw new ClientException("Unable to get filter profiles.", response.ErrorException);
-            }
+            
+            throw new ClientException("Unable to get filter profiles.", response.ErrorException);
 
         }
 
@@ -83,6 +109,11 @@ namespace Philter
             var request = new RestRequest("api/profiles/{filterProfileName}", Method.GET);
             request.AddParameter("filterProfileName", filterProfileName, ParameterType.UrlSegment);
             request.AddHeader("accept", "application/json");
+            
+            if (_token != null)
+            {
+                request.AddHeader("Authentication", "token:" + _token);
+            }
 
             var response = _client.Execute(request);
 
@@ -90,10 +121,8 @@ namespace Philter
             {
                 return response.Content;
             }
-            else
-            {
-                throw new ClientException("Unable to get filter profile.", response.ErrorException);
-            }
+
+            throw new ClientException("Unable to get filter profile.", response.ErrorException);
 
         }
 
@@ -108,6 +137,11 @@ namespace Philter
             var request = new RestRequest("api/profiles", Method.POST);
             request.AddHeader("content-type", "application/json");
             request.AddParameter("application/json", filterProfile, ParameterType.RequestBody);
+            
+            if (_token != null)
+            {
+                request.AddHeader("Authentication", "token:" + _token);
+            }
 
             var response = _client.Execute(request);
 
@@ -128,6 +162,11 @@ namespace Philter
 
             var request = new RestRequest("api/profiles/{filterProfileName}", Method.DELETE);
             request.AddParameter("filterProfileName", filterProfileName, ParameterType.UrlSegment);
+            
+            if (_token != null)
+            {
+                request.AddHeader("Authentication", "token:" + _token);
+            }
 
             var response = _client.Execute(request);
 
@@ -139,4 +178,5 @@ namespace Philter
         }
 
     }
+    
 }

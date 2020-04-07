@@ -15,6 +15,9 @@
     <PackageIcon>icon.png</PackageIcon>
     <PackageReleaseNotes>See https://github.com/mtnfog/philter-sdk-net for a list of changes.</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageVersion>1.1.0</PackageVersion>
+    <AssemblyVersion>1.1.0</AssemblyVersion>
+    <FileVersion>1.1.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
