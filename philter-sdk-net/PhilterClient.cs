@@ -106,7 +106,7 @@ namespace Philter
 
             if (_token != null)
             {
-                request.AddHeader("Authentication", "token:" + _token);
+                request.AddHeader("Authorization", Base64Encode("token:" + _token));
             }
             
             if (documentId != String.Empty)
@@ -163,7 +163,7 @@ namespace Philter
             
             if (_token != null)
             {
-                request.AddHeader("Authentication", "token:" + _token);
+                request.AddHeader("Authorization", Base64Encode("token:" + _token));
             }
 
             var response = _client.Execute(request);
@@ -192,7 +192,7 @@ namespace Philter
 
             if (_token != null)
             {
-                request.AddHeader("Authentication", "token:" + _token);
+                request.AddHeader("Authorization", Base64Encode("token:" + _token));
             }
             
             var response = _client.Execute(request);
@@ -237,6 +237,11 @@ namespace Philter
 
             throw new ClientException("Unable to get status.", response.ErrorException);
 
+        }
+
+        private string Base64Encode(string plainText)
+        {
+            return System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(plainText));
         }
 
     }
