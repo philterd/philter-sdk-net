@@ -43,6 +43,7 @@ ExplainResponse explainResponse = client.Explain(text);
 
 ## License
 
-This project is licensed under the Apache Software License, version 2.0.
+This project is licensed under the Apache License, version 2.0.
 
 Copyright 2020 Mountain Fog, Inc.
+Philter is a registered trademark of Mountain Fog, Inc.
