@@ -256,7 +256,7 @@ namespace Philter
             }
             
             var response = _client.Execute(request);
-            
+
             if (response.IsSuccessful)
             {
                 Alert[] alerts = JsonConvert.DeserializeObject<Alert[]>(response.Content);

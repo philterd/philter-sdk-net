@@ -219,6 +219,39 @@ namespace Philter
             Assert.AreEqual("1.0.0", statusResponse.Version);
 
         }
+        
+        [TestMethod]
+        public void GetAlerts()
+        {
+
+            Alert alert = new Alert
+            {
+                id = Guid.NewGuid().ToString(),
+                filterProfile = "default",
+                strategyId = "1",
+                context = "context",
+                documentId = "documentId",
+                filterType = "credit-card",
+                date = "2020-05-27T13:57:47.016Z"
+
+            };
+            
+            List<Alert> mockResponse = new List<Alert>
+            {
+                alert
+            };
+            
+            string json = Newtonsoft.Json.JsonConvert.SerializeObject(mockResponse);
+
+            _simulator.Get("/api/alerts").Responds(json).WithCode(200);
+
+            PhilterClient philterClient = new PhilterClient(GetClient());
+            List<Alert> alerts = philterClient.GetAlerts();
+
+            Assert.IsNotNull(alerts);
+            Assert.AreEqual(1, alerts.Count);
+
+        }
 
         private RestClient GetClient()
         {
