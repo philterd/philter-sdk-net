@@ -238,6 +238,64 @@ namespace Philter
             throw new ClientException("Unable to get status.", response.ErrorException);
 
         }
+        
+        /// <summary>
+        /// Gets all alerts.
+        /// </summary>
+        /// <returns>A list of alerts.</returns>
+        /// <exception cref="ClientException"></exception>
+        public List<Alert> GetAlerts()
+        {
+
+            var request = new RestRequest("api/alerts", Method.GET);
+            request.AddHeader("accept", "application/json");
+
+            if (_token != null)
+            {
+                request.AddHeader("Authorization", Base64Encode("token:" + _token));
+            }
+            
+            var response = _client.Execute(request);
+            
+            if (response.IsSuccessful)
+            {
+                Alert[] alerts = JsonConvert.DeserializeObject<Alert[]>(response.Content);
+                if (alerts != null)
+                {
+                    return alerts.ToList();
+                }
+
+                return new List<Alert>();
+
+            }
+
+            throw new ClientException("Unable to get alerts. Check Philter's status.", response.ErrorException);
+
+        }
+        
+        /// <summary>
+        /// Deletes an alert.
+        /// </summary>
+        /// <param name="alertId">The ID of the alert to delete.</param>
+        /// <exception cref="ClientException"></exception>
+        public void DeleteAlert(string alertId)
+        {
+
+            var request = new RestRequest("api/alerts/{alertId}", Method.DELETE).AddParameter("alertId", alertId);
+
+            if (_token != null)
+            {
+                request.AddHeader("Authorization", Base64Encode("token:" + _token));
+            }
+            
+            var response = _client.Execute(request);
+            
+            if (!response.IsSuccessful)
+            {
+                throw new ClientException("Unable to delete alert. Check Philter's status.", response.ErrorException);
+            }
+
+        }
 
         private string Base64Encode(string plainText)
         {
