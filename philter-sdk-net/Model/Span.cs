@@ -70,5 +70,11 @@ namespace Philter.Model
         /// </summary>
         [JsonProperty("replacement")]
         public string Replacement { get; set; }
+        
+        /// <summary>
+        /// A salt value used for hashing.
+        /// </summary>
+        [JsonProperty("salt")]
+        public string Salt { get; set; }
     }
 }
