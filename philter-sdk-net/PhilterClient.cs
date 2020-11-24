@@ -47,12 +47,11 @@ namespace Philter
         /// Creates a new Philter client.
         /// </summary>
         /// <param name="endpoint">The Philter API endpoint, e.g. https://localhost:8080.</param>
-        /// <param name="certificateFile">The certificate file name.</param>
-        /// <param name="privateKeyFile">The private key file name.</param>
+        /// <param name="certificatePfx">The certificate PFX file name.</param>
         /// <param name="privateKeyPassword">The private key's password.</param>
-        public PhilterClient(string endpoint, string certificateFile, string privateKeyFile, SecureString privateKeyPassword)
+        public PhilterClient(string endpoint, string certificatePfx, SecureString privateKeyPassword)
         {
-            X509Certificate2 certificate = new X509Certificate2(certificateFile, privateKeyPassword, X509KeyStorageFlags.MachineKeySet);
+            X509Certificate2 certificate = new X509Certificate2(certificatePfx, privateKeyPassword, X509KeyStorageFlags.MachineKeySet);
 
             _client = new RestClient(endpoint);
             _client.ClientCertificates = new X509CertificateCollection() { certificate };
