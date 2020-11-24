@@ -43,25 +43,13 @@ namespace Philter
 
             _simulator.Post("/api/filter").WithHeader("Authorization", "token:token").Responds("His SSN was {{{REDACTED-ssn}}}.").WithCode(200);
 
-            PhilterClient philterClient = new PhilterClient(GetClient(), "token");
+            PhilterClient philterClient = new PhilterClient(GetClient());
             string filteredText = philterClient.Filter("His SSN was 123-45-6789.", "context", "default");
 
             Assert.AreEqual("His SSN was {{{REDACTED-ssn}}}.", filteredText);
 
         }
         
-        [TestMethod]
-        [ExpectedException(typeof(ClientException), "Invalid token.")]
-        public void FilterUnauthorizedTest()
-        {
-
-            _simulator.Post("/api/filter").WithHeader("Authorization", "token:token").Responds("His SSN was {{{REDACTED-ssn}}}.").WithCode(401);
-
-            PhilterClient philterClient = new PhilterClient(GetClient(), "empty");
-            philterClient.Filter("His SSN was 123-45-6789.", "context", "default");
-
-        }
-
         [TestMethod]
         public void FilterWithDocumentIdTest()
         {

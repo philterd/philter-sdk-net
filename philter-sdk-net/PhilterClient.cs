@@ -21,6 +21,8 @@ using System.Collections.Generic;
 using System.Linq;
 using RestSharp;
 using System.Net;
+using System.Security;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Philter
 {
@@ -31,8 +33,7 @@ namespace Philter
     {
 
         private readonly RestClient _client;
-        private readonly string _token;
-        
+
         /// <summary>
         /// Creates a new Philter client.
         /// </summary>
@@ -41,18 +42,22 @@ namespace Philter
         {
             _client = new RestClient(endpoint);
         }
-        
+
         /// <summary>
         /// Creates a new Philter client.
         /// </summary>
         /// <param name="endpoint">The Philter API endpoint, e.g. https://localhost:8080.</param>
-        /// <<param name="token">The authentication token or <code>null</code>.</param>
-        public PhilterClient(string endpoint, string token)
+        /// <param name="certificateFile">The certificate file name.</param>
+        /// <param name="privateKeyFile">The private key file name.</param>
+        /// <param name="privateKeyPassword">The private key's password.</param>
+        public PhilterClient(string endpoint, string certificateFile, string privateKeyFile, SecureString privateKeyPassword)
         {
+            X509Certificate2 certificate = new X509Certificate2(certificateFile, privateKeyPassword, X509KeyStorageFlags.MachineKeySet);
+
             _client = new RestClient(endpoint);
-            _token = token;
+            _client.ClientCertificates = new X509CertificateCollection() { certificate };
         }
-        
+
         /// <summary>
         /// Creates a new Philter client.
         /// </summary>
@@ -62,17 +67,6 @@ namespace Philter
             _client = restClient;
         }
 
-        /// <summary>
-        /// Creates a new Philter client.
-        /// </summary>
-        /// <param name="restClient">A custom RestClient.</param>
-        /// <<param name="token">The authentication token or <code>null</code>.</param>
-        public PhilterClient(RestClient restClient, string token)
-        {
-            _client = restClient;
-            _token = token;
-        }
-        
         /// <summary>
         /// Sends text to Philter for filtering.
         /// </summary>
@@ -104,11 +98,6 @@ namespace Philter
             request.AddHeader("accept", "text/plain");
             request.AddParameter("text/plain", text, ParameterType.RequestBody);
 
-            if (_token != null)
-            {
-                request.AddHeader("Authorization", Base64Encode("token:" + _token));
-            }
-            
             if (documentId != String.Empty)
             {
                 request.AddParameter("d", documentId);
@@ -161,11 +150,6 @@ namespace Philter
                 request.AddParameter("d", documentId);
             }
             
-            if (_token != null)
-            {
-                request.AddHeader("Authorization", Base64Encode("token:" + _token));
-            }
-
             var response = _client.Execute(request);
 
             if (response.IsSuccessful)
@@ -189,11 +173,6 @@ namespace Philter
             var request = new RestRequest("api/replacements", Method.GET);
             request.AddParameter("d", documentId);
             request.AddHeader("accept", "application/json");
-
-            if (_token != null)
-            {
-                request.AddHeader("Authorization", Base64Encode("token:" + _token));
-            }
             
             var response = _client.Execute(request);
             
@@ -249,11 +228,6 @@ namespace Philter
 
             var request = new RestRequest("api/alerts", Method.GET);
             request.AddHeader("accept", "application/json");
-
-            if (_token != null)
-            {
-                request.AddHeader("Authorization", Base64Encode("token:" + _token));
-            }
             
             var response = _client.Execute(request);
 
@@ -282,11 +256,6 @@ namespace Philter
         {
 
             var request = new RestRequest("api/alerts/{alertId}", Method.DELETE).AddParameter("alertId", alertId);
-
-            if (_token != null)
-            {
-                request.AddHeader("Authorization", Base64Encode("token:" + _token));
-            }
             
             var response = _client.Execute(request);
             
@@ -307,12 +276,7 @@ namespace Philter
 
             var request = new RestRequest("api/profiles", Method.GET);
             request.AddHeader("accept", "application/json");
-
-            if (_token != null)
-            {
-                request.AddHeader("Authorization", Base64Encode("token:" + _token));
-            }
-
+            
             var response = _client.Execute(request);
 
             if (response.IsSuccessful)
@@ -336,12 +300,7 @@ namespace Philter
             var request = new RestRequest("api/profiles/{filterProfileName}", Method.GET);
             request.AddParameter("filterProfileName", filterProfileName, ParameterType.UrlSegment);
             request.AddHeader("accept", "application/json");
-
-            if (_token != null)
-            {
-                request.AddHeader("Authorization", Base64Encode("token:" + _token));
-            }
-
+            
             var response = _client.Execute(request);
 
             if (response.IsSuccessful)
@@ -364,12 +323,7 @@ namespace Philter
             var request = new RestRequest("api/profiles", Method.POST);
             request.AddHeader("content-type", "application/json");
             request.AddParameter("application/json", filterProfile, ParameterType.RequestBody);
-
-            if (_token != null)
-            {
-                request.AddHeader("Authorization", Base64Encode("token:" + _token));
-            }
-
+            
             var response = _client.Execute(request);
 
             if (!response.IsSuccessful)
@@ -389,11 +343,6 @@ namespace Philter
 
             var request = new RestRequest("api/profiles/{filterProfileName}", Method.DELETE);
             request.AddParameter("filterProfileName", filterProfileName, ParameterType.UrlSegment);
-
-            if (_token != null)
-            {
-                request.AddHeader("Authorization", Base64Encode("token:" + _token));
-            }
 
             var response = _client.Execute(request);
 
