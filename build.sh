@@ -1,5 +1,5 @@
-#!/bin/bash
-set -e
+#!/bin/bash -e
+
 dotnet restore
 dotnet test
 dotnet build -c Release

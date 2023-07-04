@@ -1,14 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net472</TargetFrameworks>
     <RootNamespace>Philter</RootNamespace>
-    <Authors>Mountain Fog, Inc.</Authors>
+    <Authors>Philterd, LLC</Authors>
     <Product>Philter .NET SDK</Product>
-    <Copyright>Copyright 2022 Mountain Fog, Inc.</Copyright>
+    <Copyright>Copyright 2023 Philterd, LLC</Copyright>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <Description>The Philter SDK for .NET enables .NET developers to easily integrate their applications with Philter to identify and remove sensitive information, such as Protected Health Information (PHI) and personally identifiable information (PII), from natural language text.</Description>
-    <PackageProjectUrl>https://github.com/mtnfog/philter-sdk-net</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/philterd/philter-sdk-net</PackageProjectUrl>
     <RepositoryUrl>https://github.com/mtnfog/philter-sdk-net</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>philter pii phi filtering</PackageTags>
@@ -22,6 +21,8 @@
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Title>philter-sdk-net</Title>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <TargetFramework>net6.0</TargetFramework>
+    <Company>Philterd, LLC</Company>
   </PropertyGroup>
 
   <ItemGroup>

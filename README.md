@@ -1,10 +1,8 @@
 # Philter SDK for .NET
 
-The **Philter SDK for .NET** enables .NET developers to easily work with Philter. [Philter](https://www.mtnfog.com/products/philter/) identifies and manipulates sensitive information like Protected Health Information (PHI) and personally identifiable information (PII) from natural language text.
+The **Philter SDK for .NET** enables .NET developers to easily work with Philter. [Philter](https://www.philterd.ai/philter/) identifies and redacts PII, PHI, and other sensitive information from text and documents. This project is an API client to use Philter from .NET applications.
 
-Refer to [Philter API](https://philter.mtnfog.com/api/) documentation for details on the methods available.
-
-[![Build Status](https://travis-ci.org/mtnfog/philter-sdk-net.svg?branch=master)](https://travis-ci.org/mtnfog/philter-sdk-net)
+Refer to [Philter API](https://docs.philterd.ai/philter/api/) documentation for details on the methods available.
 
 ## Build
 
@@ -19,7 +17,7 @@ Install using [NuGet](https://www.nuget.org/packages/philter-sdk-net/).
 Or, clone and import the project into your solution.
 
 ```
-git clone https://github.com/mtnfog/philter-sdk-net.git
+git clone https://github.com/philterd/philter-sdk-net.git
 ```
 
 With an available running instance of Philter, to filter text:
@@ -29,10 +27,7 @@ PhilterClient client = new PhilterClient("https://127.0.0.1:8080");
 string filteredText = client.Filter(text);
 ```
 
-To filter text with explanation:
-
-```
-PhilterClient client = new PhilterClient("https://127.0.0.1:8080");
+To filter text with explanation:ient client = new PhilterClient("https://127.0.0.1:8080");
 ExplainResponse explainResponse = client.Explain(text);
 ```
 
@@ -45,5 +40,6 @@ ExplainResponse explainResponse = client.Explain(text);
 
 This project is licensed under the Apache License, version 2.0.
 
-Copyright 2020 Mountain Fog, Inc.
+Copyright 2023 Philterd, LLC.
+Copyright 2023 Philterd, LLC
 Philter is a registered trademark of Mountain Fog, Inc.
