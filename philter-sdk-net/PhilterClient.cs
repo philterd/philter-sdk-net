@@ -18,9 +18,9 @@ using System;
 using Philter.Model;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using RestSharp;
-using System.Net;
 using System.Security;
 using System.Security.Cryptography.X509Certificates;
 
@@ -33,6 +33,12 @@ namespace Philter
     {
 
         private readonly RestClient _client;
+        
+        public enum ResponseFormat
+        {
+            Pdf,
+            Png
+        }
 
         /// <summary>
         /// Creates a new Philter client.
@@ -110,6 +116,43 @@ namespace Philter
             }
 
             throw new ClientException("Unable to filter text. Check Philter's status.", response.ErrorException);
+
+        }
+        
+        /// <summary>
+        /// Sends a PDF document to Philter for filtering.
+        /// </summary>
+        /// <param name="fileName">The filename of the PDF document.</param>
+        /// <param name="context">The context.</param>
+        /// <param name="documentId">The document ID.</param>
+        /// <param name="filterProfileName">The name of the filter profile to apply.</param>
+        /// <param name="responseFormat">The desired format of the returned filtered document.</param>
+        /// <returns>The filtered document.</returns>
+        /// <exception cref="ClientException"></exception>
+        public byte[] Filter(String fileName, string context, string documentId, string filterProfileName, ResponseFormat responseFormat)
+        {
+            var request = new RestRequest("api/filter", Method.POST);
+
+            var bytes = File.ReadAllBytes(fileName);
+            
+            request.AddFile(Path.GetFileNameWithoutExtension(fileName), bytes, fileName, "application/pdf");
+            request.AddParameter("c", context);
+            request.AddParameter("p", filterProfileName);
+            request.AddHeader("Accept", "application/pdf");
+
+            if (documentId != String.Empty)
+            {
+                request.AddParameter("d", documentId);
+            }
+            
+            var response = _client.Execute(request);
+
+            if (response.IsSuccessful)
+            {
+                return response.RawBytes;
+            }
+            
+            throw new ClientException("Unable to filter document. Check Philter's status.", response.ErrorException);
 
         }
 
