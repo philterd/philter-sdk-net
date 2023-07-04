@@ -75,34 +75,6 @@ namespace Philter
         }
 
         [TestMethod]
-        public void GetReplacementsTest()
-        {
-
-            Span span = new Span
-            {
-                CharacterStart = 1,
-                CharacterEnd = 2,
-                Text = "A"
-            };
-
-            List<Span> spans = new List<Span>
-            {
-                span
-            };
-
-            string json = Newtonsoft.Json.JsonConvert.SerializeObject(spans);
-
-            _simulator.Get("/api/replacements").WithParameter("d", "1234").Responds(json).WithCode(200);
-
-            PhilterClient philterClient = new PhilterClient(GetClient());
-            List<Span> replacementSpans = philterClient.GetReplacements("1234");
-
-            Assert.IsNotNull(replacementSpans);
-            Assert.AreEqual(1, replacementSpans.Count);
-
-        }
-
-        [TestMethod]
         public void ExplainTest()
         {
 

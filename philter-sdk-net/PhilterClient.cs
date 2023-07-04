@@ -148,7 +148,7 @@ namespace Philter
             {
                 request.AddParameter("d", documentId);
             }
-            
+
             var response = _client.Execute(request);
 
             if (response.IsSuccessful)
@@ -157,42 +157,6 @@ namespace Philter
             }
 
             throw new ClientException("Unable to filter text. Check Philter's status.", response.ErrorException);
-
-        }
-
-        /// <summary>
-        /// Gets the replacements made by Philter in a document.
-        /// </summary>
-        /// <param name="documentId">The document ID.</param>
-        /// <returns>A list of spans that were identified as sensitive information in the given document.</returns>
-        /// <exception cref="ClientException"></exception>
-        public List<Span> GetReplacements(string documentId)
-        {
-
-            var request = new RestRequest("api/replacements", Method.GET);
-            request.AddParameter("d", documentId);
-            request.AddHeader("accept", "application/json");
-            
-            var response = _client.Execute(request);
-            
-            if (response.StatusCode == HttpStatusCode.ServiceUnavailable)
-            {
-                throw new ClientException("Philter's replacement store is not enabled.");
-            }
-
-            if (response.IsSuccessful)
-            {
-                Span[] spans = JsonConvert.DeserializeObject<Span[]>(response.Content);
-                if (spans != null)
-                {
-                    return spans.ToList();
-                }
-
-                return new List<Span>();
-
-            }
-
-            throw new ClientException("Unable to get spans. Check Philter's status.", response.ErrorException);
 
         }
 
