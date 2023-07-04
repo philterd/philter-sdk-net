@@ -1,8 +1,8 @@
 # Philter SDK for .NET
 
-The **Philter SDK for .NET** enables .NET developers to easily work with Philter. [Philter](https://www.philterd.ai/philter/) identifies and redacts PII, PHI, and other sensitive information from text and documents. This project is an API client to use Philter from .NET applications.
+The **Philter SDK for .NET** enables .NET developers to easily work with [Philter](https://www.philterd.ai/philter/) to identify and redact PII, PHI, and other sensitive information from text and documents. This project is an API client to use Philter from .NET applications.
 
-Refer to [Philter API](https://docs.philterd.ai/philter/api/) documentation for details on the methods available.
+Refer to the [Philter API](https://docs.philterd.ai/philter/api/) documentation for details on the methods available.
 
 ## Build
 
@@ -27,7 +27,10 @@ PhilterClient client = new PhilterClient("https://127.0.0.1:8080");
 string filteredText = client.Filter(text);
 ```
 
-To filter text with explanation:ient client = new PhilterClient("https://127.0.0.1:8080");
+To filter text with explanation:
+
+```
+PhilterClient client = new PhilterClient("https://127.0.0.1:8080");
 ExplainResponse explainResponse = client.Explain(text);
 ```
 
@@ -40,6 +43,5 @@ ExplainResponse explainResponse = client.Explain(text);
 
 This project is licensed under the Apache License, version 2.0.
 
-Copyright 2023 Philterd, LLC.
 Copyright 2023 Philterd, LLC
 Philter is a registered trademark of Mountain Fog, Inc.
