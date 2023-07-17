@@ -38,4 +38,10 @@
     <ProjectReference Include="..\philter-sdk-net\philter-sdk-net.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Input\12-12110 K.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

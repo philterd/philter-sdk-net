@@ -34,12 +34,6 @@ namespace Philter
 
         private readonly RestClient _client;
         
-        public enum ResponseFormat
-        {
-            Pdf,
-            Png
-        }
-
         /// <summary>
         /// Creates a new Philter client.
         /// </summary>
@@ -82,7 +76,7 @@ namespace Philter
         /// <exception cref="ClientException"></exception>
         public string Filter(string text, string context, string filterProfileName)
         {
-            return Filter(text, context, String.Empty, filterProfileName);
+            return Filter(text, context, string.Empty, filterProfileName);
         }
 
         /// <summary>
@@ -134,13 +128,14 @@ namespace Philter
             var request = new RestRequest("api/filter", Method.POST);
 
             var bytes = File.ReadAllBytes(fileName);
-            
-            request.AddFile(Path.GetFileNameWithoutExtension(fileName), bytes, fileName, "application/pdf");
+
+            request.AddParameter("application/pdf", bytes, ParameterType.RequestBody);
             request.AddParameter("c", context);
             request.AddParameter("p", filterProfileName);
-            request.AddHeader("Accept", "application/pdf");
 
-            if (documentId != String.Empty)
+            request.AddHeader("Accept", responseFormat == ResponseFormat.Pdf ? "application/pdf" : "image/jpeg");
+
+            if (documentId != string.Empty)
             {
                 request.AddParameter("d", documentId);
             }
