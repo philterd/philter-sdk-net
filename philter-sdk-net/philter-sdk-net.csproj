@@ -21,7 +21,7 @@
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Title>philter-sdk-net</Title>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <Company>Philterd, LLC</Company>
   </PropertyGroup>
 

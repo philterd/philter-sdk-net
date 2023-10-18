@@ -71,12 +71,12 @@ namespace Philter
         /// </summary>
         /// <param name="text">The text to be filtered.</param>
         /// <param name="context">The context.</param>
-        /// <param name="filterProfileName">The name of the filter profile to apply.</param>
+        /// <param name="policyName">The name of the policy to apply.</param>
         /// <returns>The filtered text.</returns>
         /// <exception cref="ClientException"></exception>
-        public string Filter(string text, string context, string filterProfileName)
+        public string Filter(string text, string context, string policyName)
         {
-            return Filter(text, context, string.Empty, filterProfileName);
+            return Filter(text, context, string.Empty, policyName);
         }
 
         /// <summary>
@@ -85,15 +85,15 @@ namespace Philter
         /// <param name="text">The text to be filtered.</param>
         /// <param name="context">The context.</param>
         /// <param name="documentId">The document ID.</param>
-        /// <param name="filterProfileName">The name of the filter profile to apply.</param>
+        /// <param name="policyName">The name of the policy to apply.</param>
         /// <returns>The filtered text.</returns>
         /// <exception cref="ClientException"></exception>
-        public string Filter(string text, string context, string documentId, string filterProfileName)
+        public string Filter(string text, string context, string documentId, string policyName)
         {
 
             var request = new RestRequest("api/filter", Method.POST);
             request.AddParameter("c", context);
-            request.AddParameter("p", filterProfileName);
+            request.AddParameter("p", policyName);
             request.AddHeader("accept", "text/plain");
             request.AddParameter("text/plain", text, ParameterType.RequestBody);
 
@@ -119,11 +119,11 @@ namespace Philter
         /// <param name="fileName">The filename of the PDF document.</param>
         /// <param name="context">The context.</param>
         /// <param name="documentId">The document ID.</param>
-        /// <param name="filterProfileName">The name of the filter profile to apply.</param>
+        /// <param name="policyName">The name of the policy to apply.</param>
         /// <param name="responseFormat">The desired format of the returned filtered document.</param>
         /// <returns>The filtered document.</returns>
         /// <exception cref="ClientException"></exception>
-        public byte[] Filter(String fileName, string context, string documentId, string filterProfileName, ResponseFormat responseFormat)
+        public byte[] Filter(String fileName, string context, string documentId, string policyName, ResponseFormat responseFormat)
         {
             var request = new RestRequest("api/filter", Method.POST);
 
@@ -131,7 +131,7 @@ namespace Philter
 
             request.AddParameter("application/pdf", bytes, ParameterType.RequestBody);
             request.AddParameter("c", context);
-            request.AddParameter("p", filterProfileName);
+            request.AddParameter("p", policyName);
 
             request.AddHeader("Accept", responseFormat == ResponseFormat.Pdf ? "application/pdf" : "image/jpeg");
 
@@ -156,12 +156,12 @@ namespace Philter
         /// </summary>
         /// <param name="text">The text to be filtered.</param>
         /// <param name="context">The context.</param>
-        /// <param name="filterProfileName">The name of the filter profile to apply.</param>
+        /// <param name="policyName">The name of the policy to apply.</param>
         /// <returns>The filtered text with the filtering explanation.</returns>
         /// <exception cref="ClientException"></exception>
-        public ExplainResponse Explain(string text, string context, string filterProfileName)
+        public ExplainResponse Explain(string text, string context, string policyName)
         {
-            return Explain(text, context, String.Empty, filterProfileName);
+            return Explain(text, context, String.Empty, policyName);
         }
 
         /// <summary>
@@ -170,15 +170,15 @@ namespace Philter
         /// <param name="text">The text to be filtered.</param>
         /// <param name="context">The context.</param>
         /// <param name="documentId">The document ID.</param>
-        /// <param name="filterProfileName">The name of the filter profile to apply.</param>
+        /// <param name="policyName">The name of the policy to apply.</param>
         /// <returns>The filtered text with the filtering explanation.</returns>
         /// <exception cref="ClientException"></exception>
-        public ExplainResponse Explain(string text, string context, string documentId, string filterProfileName)
+        public ExplainResponse Explain(string text, string context, string documentId, string policyName)
         {
 
             var request = new RestRequest("api/explain", Method.POST);
             request.AddParameter("c", context);
-            request.AddParameter("p", filterProfileName);
+            request.AddParameter("p", policyName);
             request.AddHeader("accept", "application/json");
             request.AddParameter("text/plain", text, ParameterType.RequestBody);
 
@@ -268,9 +268,9 @@ namespace Philter
         }
 
         /// <summary>
-        /// Get the names of available filter profiles.
+        /// Get the names of available policies.
         /// </summary>
-        /// <returns>A list of filter profile names.</returns>
+        /// <returns>A list of policy names.</returns>
         /// <exception cref="ClientException"></exception>
         public List<string> GetFilterProfiles()
         {
@@ -285,21 +285,21 @@ namespace Philter
                 return JsonConvert.DeserializeObject<List<string>>(response.Content);
             }
 
-            throw new ClientException("Unable to get filter profiles.", response.ErrorException);
+            throw new ClientException("Unable to get policies.", response.ErrorException);
 
         }
 
         /// <summary>
-        /// Get a filter profile.
+        /// Get a policy.
         /// </summary>
-        /// <param name="filterProfileName">The name of a filter profile.</param>
-        /// <returns>The filter profile.</returns>
+        /// <param name="policyName">The name of a policy.</param>
+        /// <returns>The policy.</returns>
         /// <exception cref="ClientException"></exception>
-        public string GetFilterProfile(string filterProfileName)
+        public string GetFilterProfile(string policyName)
         {
 
-            var request = new RestRequest("api/profiles/{filterProfileName}", Method.GET);
-            request.AddParameter("filterProfileName", filterProfileName, ParameterType.UrlSegment);
+            var request = new RestRequest("api/profiles/{policyName}", Method.GET);
+            request.AddParameter("policyName", policyName, ParameterType.UrlSegment);
             request.AddHeader("accept", "application/json");
             
             var response = _client.Execute(request);
@@ -309,47 +309,47 @@ namespace Philter
                 return response.Content;
             }
 
-            throw new ClientException("Unable to get filter profile.", response.ErrorException);
+            throw new ClientException("Unable to get policy.", response.ErrorException);
 
         }
 
         /// <summary>
-        /// Upload a filter profile. If a filter profile with the same name already exists it will be overwritten.
+        /// Upload a policy. If a policy with the same name already exists it will be overwritten.
         /// </summary>
-        /// <param name="filterProfile">The filter profile.</param>
+        /// <param name="policy">The policy.</param>
         /// <exception cref="ClientException"></exception>
-        public void SaveFilterProfile(string filterProfile)
+        public void SaveFilterProfile(string policy)
         {
 
             var request = new RestRequest("api/profiles", Method.POST);
             request.AddHeader("content-type", "application/json");
-            request.AddParameter("application/json", filterProfile, ParameterType.RequestBody);
+            request.AddParameter("application/json", policy, ParameterType.RequestBody);
             
             var response = _client.Execute(request);
 
             if (!response.IsSuccessful)
             {
-                throw new ClientException("Unable to save filter profile.", response.ErrorException);
+                throw new ClientException("Unable to save policy.", response.ErrorException);
             }
 
         }
 
         /// <summary>
-        /// Delete a filter profile.
+        /// Delete a policy.
         /// </summary>
-        /// <param name="filterProfileName">The name of the filter profile to delete.</param>
+        /// <param name="policyName">The name of the policy to delete.</param>
         /// <exception cref="ClientException"></exception>
-        public void DeleteFilterProfile(string filterProfileName)
+        public void DeleteFilterProfile(string policyName)
         {
 
-            var request = new RestRequest("api/profiles/{filterProfileName}", Method.DELETE);
-            request.AddParameter("filterProfileName", filterProfileName, ParameterType.UrlSegment);
+            var request = new RestRequest("api/profiles/{policyName}", Method.DELETE);
+            request.AddParameter("policyName", policyName, ParameterType.UrlSegment);
 
             var response = _client.Execute(request);
 
             if (!response.IsSuccessful)
             {
-                throw new ClientException("Unable to delete filter profile.", response.ErrorException);
+                throw new ClientException("Unable to delete policy.", response.ErrorException);
             }
 
         }

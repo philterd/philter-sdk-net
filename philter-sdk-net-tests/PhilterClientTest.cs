@@ -187,7 +187,7 @@ namespace Philter
             Alert alert = new Alert
             {
                 id = Guid.NewGuid().ToString(),
-                filterProfile = "default",
+                policy = "default",
                 strategyId = "1",
                 context = "context",
                 documentId = "documentId",

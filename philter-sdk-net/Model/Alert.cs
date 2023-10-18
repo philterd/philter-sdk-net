@@ -23,8 +23,8 @@ namespace Philter.Model
         [JsonProperty("id")]
         public string id { get; set; }
         
-        [JsonProperty("filterProfile")]
-        public string filterProfile { get; set; }
+        [JsonProperty("policy")]
+        public string policy { get; set; }
         
         [JsonProperty("strategyId")]
         public string strategyId { get; set; }
