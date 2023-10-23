@@ -272,7 +272,7 @@ namespace Philter
         /// </summary>
         /// <returns>A list of policy names.</returns>
         /// <exception cref="ClientException"></exception>
-        public List<string> GetFilterProfiles()
+        public List<string> GetPolicies()
         {
 
             var request = new RestRequest("api/profiles", Method.GET);
@@ -295,7 +295,7 @@ namespace Philter
         /// <param name="policyName">The name of a policy.</param>
         /// <returns>The policy.</returns>
         /// <exception cref="ClientException"></exception>
-        public string GetFilterProfile(string policyName)
+        public string GetPolicy(string policyName)
         {
 
             var request = new RestRequest("api/profiles/{policyName}", Method.GET);
@@ -318,7 +318,7 @@ namespace Philter
         /// </summary>
         /// <param name="policy">The policy.</param>
         /// <exception cref="ClientException"></exception>
-        public void SaveFilterProfile(string policy)
+        public void SavePolicy(string policy)
         {
 
             var request = new RestRequest("api/profiles", Method.POST);
@@ -339,7 +339,7 @@ namespace Philter
         /// </summary>
         /// <param name="policyName">The name of the policy to delete.</param>
         /// <exception cref="ClientException"></exception>
-        public void DeleteFilterProfile(string policyName)
+        public void DeletePolicy(string policyName)
         {
 
             var request = new RestRequest("api/profiles/{policyName}", Method.DELETE);
