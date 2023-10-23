@@ -1,8 +1,6 @@
 # Philter SDK for .NET
 
-The **Philter SDK for .NET** enables .NET developers to easily work with [Philter](https://www.philterd.ai/philter/) to identify and redact PII, PHI, and other sensitive information from text and documents. This project is an API client to use Philter from .NET applications.
-
-Refer to the [Philter API](https://docs.philterd.ai/philter/api/) documentation for details on the methods available.
+The Philter SDK for .NET is a client for de-identifying and redacting text using Philter. Refer to the [Philter API](https://docs.philterd.ai/philter/api/) documentation for details on the methods available.
 
 ## Build
 
@@ -11,8 +9,6 @@ The project can be built using Visual Studio or other .NET IDE. It can be built 
 ## Usage
 
 Install using [NuGet](https://www.nuget.org/packages/philter-sdk-net/).
-
-[![nuget](https://img.shields.io/nuget/v/philter-sdk-net.svg)](https://www.nuget.org/packages/philter-sdk-net/)
 
 Or, clone and import the project into your solution.
 
