@@ -32,7 +32,8 @@ ExplainResponse explainResponse = client.Explain(text);
 
 ## Release History
 
-* 1.2.0 - Renamed filter profiles to policies. Updated to .NET 7.0.
+* 1.3.1 - Updates for RestSharp 110.2.0.
+* 1.3.0 - Renamed filter profiles to policies. Updated to .NET 7.0.
 * 1.1.0 - Added authentication support.
 * 1.0.0 - Initial release.
 

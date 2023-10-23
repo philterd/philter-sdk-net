@@ -53,8 +53,12 @@ namespace Philter
         {
             X509Certificate2 certificate = new X509Certificate2(certificatePfx, privateKeyPassword, X509KeyStorageFlags.MachineKeySet);
 
-            _client = new RestClient(endpoint);
-            _client.ClientCertificates = new X509CertificateCollection() { certificate };
+            var options = new RestClientOptions(endpoint)
+            {
+                ClientCertificates = new X509CertificateCollection() { certificate }
+            };
+            _client = new RestClient(options);
+
         }
 
         /// <summary>
@@ -91,7 +95,7 @@ namespace Philter
         public string Filter(string text, string context, string documentId, string policyName)
         {
 
-            var request = new RestRequest("api/filter", Method.POST);
+            var request = new RestRequest("api/filter", Method.Post);
             request.AddParameter("c", context);
             request.AddParameter("p", policyName);
             request.AddHeader("accept", "text/plain");
@@ -125,7 +129,7 @@ namespace Philter
         /// <exception cref="ClientException"></exception>
         public byte[] Filter(String fileName, string context, string documentId, string policyName, ResponseFormat responseFormat)
         {
-            var request = new RestRequest("api/filter", Method.POST);
+            var request = new RestRequest("api/filter", Method.Post);
 
             var bytes = File.ReadAllBytes(fileName);
 
@@ -176,7 +180,7 @@ namespace Philter
         public ExplainResponse Explain(string text, string context, string documentId, string policyName)
         {
 
-            var request = new RestRequest("api/explain", Method.POST);
+            var request = new RestRequest("api/explain", Method.Post);
             request.AddParameter("c", context);
             request.AddParameter("p", policyName);
             request.AddHeader("accept", "application/json");
@@ -206,7 +210,7 @@ namespace Philter
         public StatusResponse GetStatus()
         {
 
-            var request = new RestRequest("api/status", Method.GET);
+            var request = new RestRequest("api/status", Method.Get);
 
             var response = _client.Execute(request);
 
@@ -227,7 +231,7 @@ namespace Philter
         public List<Alert> GetAlerts()
         {
 
-            var request = new RestRequest("api/alerts", Method.GET);
+            var request = new RestRequest("api/alerts", Method.Get);
             request.AddHeader("accept", "application/json");
             
             var response = _client.Execute(request);
@@ -256,7 +260,7 @@ namespace Philter
         public void DeleteAlert(string alertId)
         {
 
-            var request = new RestRequest("api/alerts/{alertId}", Method.DELETE).AddParameter("alertId", alertId);
+            var request = new RestRequest("api/alerts/{alertId}", Method.Delete).AddParameter("alertId", alertId);
             
             var response = _client.Execute(request);
             
@@ -275,7 +279,7 @@ namespace Philter
         public List<string> GetPolicies()
         {
 
-            var request = new RestRequest("api/profiles", Method.GET);
+            var request = new RestRequest("api/profiles", Method.Get);
             request.AddHeader("accept", "application/json");
             
             var response = _client.Execute(request);
@@ -298,7 +302,7 @@ namespace Philter
         public string GetPolicy(string policyName)
         {
 
-            var request = new RestRequest("api/profiles/{policyName}", Method.GET);
+            var request = new RestRequest("api/profiles/{policyName}", Method.Get);
             request.AddParameter("policyName", policyName, ParameterType.UrlSegment);
             request.AddHeader("accept", "application/json");
             
@@ -321,7 +325,7 @@ namespace Philter
         public void SavePolicy(string policy)
         {
 
-            var request = new RestRequest("api/profiles", Method.POST);
+            var request = new RestRequest("api/profiles", Method.Post);
             request.AddHeader("content-type", "application/json");
             request.AddParameter("application/json", policy, ParameterType.RequestBody);
             
@@ -342,7 +346,7 @@ namespace Philter
         public void DeletePolicy(string policyName)
         {
 
-            var request = new RestRequest("api/profiles/{policyName}", Method.DELETE);
+            var request = new RestRequest("api/profiles/{policyName}", Method.Delete);
             request.AddParameter("policyName", policyName, ParameterType.UrlSegment);
 
             var response = _client.Execute(request);

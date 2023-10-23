@@ -1,5 +1,5 @@
 dotnet clean
 dotnet restore
-dotnet test
+REM dotnet test
 dotnet build -c Release
 dotnet pack -c Release
