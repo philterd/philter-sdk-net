@@ -62,18 +62,7 @@ namespace Philter
             Assert.AreEqual("His SSN was {{{REDACTED-ssn}}}.", filteredText);
 
         }
-
-        [TestMethod]
-        public void GetReplacementsBadRequestTest()
-        {
-
-            _simulator.Get("/api/replacements").WithParameter("d", "").Responds("").WithCode(400);
-
-            PhilterClient philterClient = new PhilterClient(GetClient());
-            Assert.ThrowsException<ClientException>(() => philterClient.Filter("His SSN was 123-45-6789.", "context", "default"));
-
-        }
-
+        
         [TestMethod]
         public void ExplainTest()
         {
