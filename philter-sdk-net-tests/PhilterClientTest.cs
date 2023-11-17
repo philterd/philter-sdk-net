@@ -204,11 +204,13 @@ namespace Philter
 
         private RestClient GetClient()
         {
-            RestClient restClient = new RestClient
+            var endpoint = new Uri("https://10.0.2.51:8080");
+
+            var options = new RestClientOptions(endpoint)
             {
-                RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true,
-                BaseUrl = new Uri("http://localhost:18081/")
+                RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true
             };
+            RestClient restClient = new RestClient(options);
 
             return restClient;
         }

@@ -44,27 +44,29 @@ namespace Philter
 
         private RestClient GetClient()
         {
-            RestClient restClient = new RestClient
+            var endpoint = new Uri("https://10.0.2.51:8080");
+
+            var options = new RestClientOptions(endpoint)
             {
-                RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true,
-                BaseUrl = new Uri("https://10.0.2.51:8080")
+                RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true
             };
+            RestClient restClient = new RestClient(options);
 
             return restClient;
         }
         
         private RestClient GetClient(string certificateFile, SecureString password)
         {
-            RestClient restClient = new RestClient
+
+            var endpoint = new Uri("https://10.0.2.51:8080");
+            X509Certificate2 certificate = new X509Certificate2(certificateFile, password, X509KeyStorageFlags.MachineKeySet);
+
+            var options = new RestClientOptions(endpoint)
             {
-                RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true,
-                BaseUrl = new Uri("https://10.0.2.51:8080")
+                ClientCertificates = new X509CertificateCollection() { certificate },
+                RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true
             };
-
-            X509Certificate2 certificate = new X509Certificate2(certificateFile, password,
-                X509KeyStorageFlags.MachineKeySet);
-
-            restClient.ClientCertificates = new X509CertificateCollection() { certificate };
+            RestClient restClient = new RestClient(options);
 
             return restClient;
         }
